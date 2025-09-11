@@ -52,72 +52,11 @@
         }
     </style>
 </head>
-<body class="gradient-bg flex items-center justify-center min-h-screen p-4">
+<body class="gradient-bg flex flex-col items-center justify-center min-h-screen p-4">
 
-    <!-- Conteneur principal -->
-    <div class="w-full max-w-4xl p-8 bg-white rounded-3xl shadow-2xl text-center">
-        <div class="flex items-center justify-center mb-4">
-            <span class="text-4xl">🛠️</span>
-        </div>
-        <h2 class="text-2xl font-bold text-gray-700 mb-2">TECHPRECISION972</h2>
-        <h1 class="text-4xl font-bold text-gray-800 mb-2">Utilitaire de Dépannage</h1>
-        <p class="text-gray-600 mb-8">
-            Sélectionnez votre problème pour obtenir des étapes de dépannage simples et rapides.
-        </p>
-
-        <!-- Grille des cartes de problèmes -->
-        <div id="problems-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-
-            <!-- Carte : L'ordinateur ne s'allume pas -->
-            <div data-problem="no-power" class="card-hover cursor-pointer p-6 bg-purple-100 rounded-2xl shadow-md transition-all duration-300 transform">
-                <div class="text-3xl mb-2">💻</div>
-                <h3 class="text-lg font-semibold text-purple-800">L'ordinateur ne s'allume pas</h3>
-            </div>
-
-            <!-- Carte : Mot de passe oublié -->
-            <div data-problem="password-forgotten" class="card-hover cursor-pointer p-6 bg-blue-100 rounded-2xl shadow-md transition-all duration-300 transform">
-                <div class="text-3xl mb-2">🔑</div>
-                <h3 class="text-lg font-semibold text-blue-800">Mot de passe oublié</h3>
-            </div>
-
-            <!-- Carte : La batterie ne charge pas -->
-            <div data-problem="battery-not-charging" class="card-hover cursor-pointer p-6 bg-green-100 rounded-2xl shadow-md transition-all duration-300 transform">
-                <div class="text-3xl mb-2">🔋</div>
-                <h3 class="text-lg font-semibold text-green-800">La batterie ne charge pas</h3>
-            </div>
-
-            <!-- Carte : L'écran est sombre -->
-            <div data-problem="dark-screen" class="card-hover cursor-pointer p-6 bg-yellow-100 rounded-2xl shadow-md transition-all duration-300 transform">
-                <div class="text-3xl mb-2">💡</div>
-                <h3 class="text-lg font-semibold text-yellow-800">L'écran est sombre</h3>
-            </div>
-
-            <!-- NOUVELLES CARTES -->
-            <!-- Carte : L'ordinateur est lent -->
-            <div data-problem="slow-computer" class="card-hover cursor-pointer p-6 bg-red-100 rounded-2xl shadow-md transition-all duration-300 transform">
-                <div class="text-3xl mb-2">🐌</div>
-                <h3 class="text-lg font-semibold text-red-800">Mon ordinateur est lent</h3>
-            </div>
-
-            <!-- Carte : Wi-Fi ne fonctionne pas -->
-            <div data-problem="wifi-down" class="card-hover cursor-pointer p-6 bg-orange-100 rounded-2xl shadow-md transition-all duration-300 transform">
-                <div class="text-3xl mb-2">📶</div>
-                <h3 class="text-lg font-semibold text-orange-800">Le Wi-Fi ne se connecte pas</h3>
-            </div>
-
-            <!-- Carte : Souris/Clavier ne fonctionne pas -->
-            <div data-problem="input-device-fail" class="card-hover cursor-pointer p-6 bg-pink-100 rounded-2xl shadow-md transition-all duration-300 transform">
-                <div class="text-3xl mb-2">🖱️</div>
-                <h3 class="text-lg font-semibold text-pink-800">La souris ou le clavier ne fonctionne pas</h3>
-            </div>
-            
-            <!-- NOUVELLE CARTE "AUTRE PROBLÈME" -->
-            <div data-problem="other-problem" class="card-hover cursor-pointer p-6 bg-gray-200 rounded-2xl shadow-md transition-all duration-300 transform">
-                <div class="text-3xl mb-2">🤷</div>
-                <h3 class="text-lg font-semibold text-gray-800">Autre Problème</h3>
-            </div>
-            
-        </div>
+    <!-- Conteneur principal de l'application -->
+    <div id="app-container" class="w-full max-w-4xl p-8 bg-white rounded-3xl shadow-2xl text-center">
+        <!-- Contenu injecté par JavaScript en fonction du problème -->
     </div>
 
     <!-- Modale pour les étapes de dépannage -->
@@ -134,102 +73,287 @@
             </div>
         </div>
     </div>
+    
+    <!-- Nouveau bloc pour le numéro de téléphone en bas de page -->
+    <div class="fixed bottom-0 left-0 right-0 p-4 text-center bg-gray-900 bg-opacity-70 z-10">
+        <p class="text-xs text-white">Contactez-nous directement : <a href="tel:+596696600814" class="underline font-semibold">+596 696 60 08 14</a></p>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const problemsContainer = document.getElementById('problems-container');
+            const appContainer = document.getElementById('app-container');
             const modal = document.getElementById('modal');
             const modalContent = document.getElementById('modal-content');
             const closeModalBtn = document.getElementById('close-modal');
             const backButton = document.getElementById('back-button');
 
-            // Ces liens sont ceux que vous avez fournis
+            // Vos liens sont ici
             const googleFormsLink = "https://forms.gle/MWtNaPYrcdne9q1Z9";
             const whatsappLink = "https://wa.me/message/EUICLD2JHWORN1";
             const phoneNumber = "+596696600814";
 
-            // Fonction pour générer un numéro de ticket aléatoire à 3 chiffres
+            // Fonction pour générer un numéro de ticket aléatoire
             function generateTicketNumber() {
                 const number = Math.floor(100 + Math.random() * 900);
                 return `TP972-${number}`;
             }
+            
+            // Fonction pour générer un nombre de personnes aléatoire pour le compteur
+            function generateUserCount() {
+                return Math.floor(1000 + Math.random() * 9000);
+            }
 
-            const solutions = {
+            // Données pour les problèmes Windows
+            const windowsProblems = {
                 'no-power': {
-                    title: 'L\'ordinateur ne s\'allume pas',
+                    title: 'L\'ordinateur ne s\'allume pas (Windows)',
                     steps: [
-                        'Vérifiez que le câble d\'alimentation est bien branché à l\'ordinateur et à la prise murale.',
-                        'Essayez une autre prise de courant pour vous assurer qu\'elle fonctionne.',
-                        'Si c\'est un ordinateur portable, assurez-vous que la batterie est chargée ou essayez de l\'allumer sans la batterie, uniquement avec le chargeur.',
-                        'Si vous avez un ordinateur de bureau, vérifiez que l\'interrupteur d\'alimentation à l\'arrière du boîtier est bien sur la position "ON".'
+                        'Vérifiez que le câble d\'alimentation est bien branché.',
+                        'Essayez une autre prise de courant.',
+                        'Sur les portables, débranchez la batterie et essayez d\'allumer avec le chargeur seul.',
+                        'Sur un ordinateur de bureau, vérifiez l\'interrupteur derrière le boîtier.'
                     ]
                 },
                 'password-forgotten': {
-                    title: 'Mot de passe oublié',
+                    title: 'Mot de passe oublié (Windows)',
                     steps: [
-                        'Pour Windows, essayez l\'option "J\'ai oublié mon mot de passe" ou "Réinitialiser le mot de passe" sur l\'écran de connexion.',
-                        'Pour macOS, redémarrez votre Mac et maintenez les touches "Command" + "R" enfoncées pour accéder aux utilitaires de récupération.',
-                        'Sur les téléphones, utilisez la fonction de récupération de compte de Google ou d\'Apple pour réinitialiser le mot de passe.',
-                        'Si aucune de ces méthodes ne fonctionne, vous devrez peut-être réinstaller le système d\'exploitation.'
+                        'Essayez l\'option "J\'ai oublié mon mot de passe" sur l\'écran de connexion.',
+                        'Si vous avez un compte Microsoft, réinitialisez votre mot de passe en ligne sur account.live.com.',
+                        'Si cela ne fonctionne pas, vous devrez peut-être utiliser une clé de réinitialisation ou réinstaller le système.'
                     ]
                 },
                 'battery-not-charging': {
-                    title: 'La batterie ne charge pas',
+                    title: 'La batterie ne charge pas (Windows)',
                     steps: [
-                        'Assurez-vous que le chargeur est bien branché et fonctionne en essayant une autre prise.',
-                        'Redémarrez l\'ordinateur. Parfois, un simple redémarrage peut résoudre un bug logiciel qui empêche la charge.',
-                        'Vérifiez qu\'il n\'y a pas de saleté ou de débris dans le port de charge de votre ordinateur.',
-                        'Si possible, essayez d\'utiliser un autre chargeur compatible pour voir si le problème vient du chargeur actuel.'
+                        'Assurez-vous que le chargeur est bien branché. Essayez une autre prise.',
+                        'Redémarrez l\'ordinateur. Parfois, un bug logiciel est la cause.',
+                        'Vérifiez l\'état des pilotes de batterie dans le "Gestionnaire de périphériques" (touche Windows + X).',
+                        'Si possible, essayez d\'utiliser un autre chargeur.'
                     ]
                 },
                 'dark-screen': {
-                    title: 'L\'écran est sombre',
+                    title: 'L\'écran est sombre (Windows)',
                     steps: [
-                        'Appuyez sur les touches de fonction de votre clavier qui contrôlent la luminosité (souvent avec un symbole de soleil).',
-                        'Redémarrez l\'ordinateur. Un bug d\'affichage peut être corrigé de cette façon.',
-                        'Assurez-vous que l\'ordinateur n\'est pas en mode "économie d\'énergie" qui réduit la luminosité automatiquement.',
-                        'Si l\'écran reste noir, il peut y avoir un problème avec le moniteur ou la carte graphique. Essayez de brancher un moniteur externe si vous en avez un.'
+                        'Appuyez sur les touches de fonction de luminosité (souvent avec un symbole de soleil).',
+                        'Essayez la combinaison de touches **Windows + Ctrl + Shift + B** pour redémarrer les pilotes graphiques.',
+                        'Si l\'écran reste noir, il peut y avoir un problème avec votre moniteur ou votre carte graphique.',
                     ]
                 },
                 'slow-computer': {
-                    title: 'Mon ordinateur est lent',
+                    title: 'Mon ordinateur est lent (Windows)',
                     steps: [
-                        'Redémarrez l\'ordinateur. C\'est la solution la plus simple et souvent la plus efficace.',
-                        'Fermez les applications que vous n\'utilisez pas. Un grand nombre de programmes ouverts ralentit la machine.',
-                        'Vérifiez l\'espace disque disponible. Si votre disque est presque plein, cela peut ralentir considérablement votre PC.',
-                        'Faites un scan antivirus pour vous assurer qu\'aucun logiciel malveillant ne tourne en arrière-plan.'
+                        'Redémarrez l\'ordinateur.',
+                        'Fermez les applications inutiles (touche **Ctrl + Shift + Esc** pour ouvrir le Gestionnaire des tâches).',
+                        'Libérez de l\'espace disque en supprimant des fichiers volumineux.',
+                        'Faites un scan antivirus complet de votre système.',
                     ]
                 },
                 'wifi-down': {
-                    title: 'Le Wi-Fi ne se connecte pas',
+                    title: 'Le Wi-Fi ne se connecte pas (Windows)',
                     steps: [
-                        'Redémarrez votre routeur (votre box internet). Débranchez-le, attendez 30 secondes, puis rebranchez-le.',
-                        'Sur votre ordinateur, désactivez et réactivez le Wi-Fi. Parfois, cela suffit à relancer la connexion.',
-                        'Vérifiez le mot de passe du réseau Wi-Fi. Assurez-vous qu\'il est correctement saisi.',
-                        'Si le problème persiste, essayez de connecter un autre appareil au même réseau. Si aucun appareil ne se connecte, le problème vient probablement de votre routeur ou de votre fournisseur internet.'
+                        'Redémarrez votre box internet.',
+                        'Sur votre PC, éteignez et rallumez le Wi-Fi dans les paramètres ou avec la touche de fonction.',
+                        'Essayez la combinaison de touches **Windows + R** puis tapez "ncpa.cpl" pour vérifier la carte réseau.',
+                        'Vérifiez que le mot de passe Wi-Fi est correct.'
                     ]
                 },
                 'input-device-fail': {
-                    title: 'La souris ou le clavier ne fonctionne pas',
+                    title: 'La souris ou le clavier ne fonctionne pas (Windows)',
                     steps: [
-                        'Si c\'est sans fil, vérifiez les piles ou la batterie. Assurez-vous qu\'elles sont bien chargées.',
-                        'Si c\'est un appareil USB, essayez de le brancher sur un autre port USB de votre ordinateur.',
-                        'Si l\'appareil est un clavier d\'ordinateur portable, essayez de le nettoyer. La poussière ou les débris peuvent empêcher le bon fonctionnement des touches.',
-                        'Redémarrez votre ordinateur. Cela peut résoudre les conflits de pilotes qui bloquent l\'appareil.'
+                        'Si l\'appareil est sans fil, vérifiez les piles ou la batterie.',
+                        'Essayez de le brancher sur un autre port USB.',
+                        'Redémarrez votre ordinateur. Cela peut résoudre les conflits de pilotes.',
+                        'Pour le clavier d\'un ordinateur portable, vérifiez si des débris bloquent les touches.',
                     ]
                 },
                 'other-problem': {
-                    title: 'Assistance personnalisée',
-                    steps: [] // Pas d'étapes de dépannage pour cette option
+                    title: 'Assistance personnalisée (Windows)',
+                    steps: []
+                }
+            };
+            
+            // Données pour les problèmes Apple
+            const macProblems = {
+                'no-power': {
+                    title: 'Le Mac ne s\'allume pas (Apple)',
+                    steps: [
+                        'Vérifiez que le chargeur est bien branché et fonctionne.',
+                        'Essayez de réinitialiser le contrôleur de gestion du système (SMC). Sur un MacBook, débranchez tout, puis maintenez **Shift + Control + Option + Power** pendant 10 secondes.',
+                        'Si cela ne fonctionne pas, il peut s\'agir d\'un problème matériel.'
+                    ]
+                },
+                'password-forgotten': {
+                    title: 'Mot de passe oublié (Apple)',
+                    steps: [
+                        'Sur l\'écran de connexion, cliquez sur le "?" à côté du champ de mot de passe.',
+                        'Si vous avez un compte iCloud, utilisez-le pour réinitialiser le mot de passe.',
+                        'Redémarrez votre Mac en maintenant les touches **Command + R** pour accéder au menu de récupération de macOS et utiliser l\'utilitaire de réinitialisation de mot de passe.'
+                    ]
+                },
+                'battery-not-charging': {
+                    title: 'La batterie ne charge pas (Apple)',
+                    steps: [
+                        'Vérifiez que le chargeur est bien branché et n\'est pas endommagé.',
+                        'Réinitialisez le contrôleur de gestion du système (SMC). Sur un Mac de bureau, éteignez le Mac, débranchez le cordon d\'alimentation, attendez 15 secondes, puis rebranchez.',
+                        'Vérifiez l\'état de la batterie dans "Préférences Système" > "Batterie".'
+                    ]
+                },
+                'dark-screen': {
+                    title: 'L\'écran est sombre (Apple)',
+                    steps: [
+                        'Appuyez sur les touches de luminosité du clavier.',
+                        'Redémarrez votre Mac. Si l\'écran reste noir, essayez de réinitialiser la NVRAM ou la PRAM en redémarrant et en maintenant les touches **Option + Command + P + R** pendant 20 secondes.',
+                        'Si vous avez un écran externe, essayez de le brancher pour voir si le problème vient de l\'écran interne.'
+                    ]
+                },
+                'slow-computer': {
+                    title: 'Mon Mac est lent (Apple)',
+                    steps: [
+                        'Redémarrez votre Mac. C\'est souvent suffisant.',
+                        'Fermez les applications non utilisées.',
+                        'Vérifiez l\'espace disque disponible. Il est recommandé d\'avoir au moins 10% d\'espace libre.',
+                        'Utilisez le "Moniteur d\'activité" (dans les Applications > Utilitaires) pour identifier les applications qui consomment le plus de ressources.'
+                    ]
+                },
+                'wifi-down': {
+                    title: 'Le Wi-Fi ne se connecte pas (Apple)',
+                    steps: [
+                        'Redémarrez votre box internet.',
+                        'Sur votre Mac, éteignez et rallumez le Wi-Fi dans le menu de la barre des tâches.',
+                        'Dans les "Préférences Système" > "Réseau", supprimez votre réseau Wi-Fi puis reconnectez-vous.',
+                        'Vérifiez que le mot de passe est correct.'
+                    ]
+                },
+                'input-device-fail': {
+                    title: 'La souris ou le clavier ne fonctionne pas (Apple)',
+                    steps: [
+                        'Si l\'appareil est sans fil, vérifiez le niveau de la batterie ou les piles.',
+                        'Si c\'est un appareil USB, essayez de le brancher sur un autre port.',
+                        'Redémarrez votre Mac. Cela peut résoudre les conflits logiciels.',
+                        'Essayez la combinaison de touches **Command + Option + P + R** au redémarrage pour réinitialiser la PRAM/NVRAM.'
+                    ]
+                },
+                'other-problem': {
+                    title: 'Assistance personnalisée (Apple)',
+                    steps: []
                 }
             };
 
-            // Écouteur d'événement pour les cartes de problèmes
-            problemsContainer.addEventListener('click', (event) => {
+            let currentProblems = {};
+
+            // Fonction pour afficher la page de sélection du système d'exploitation
+            function showOSSelection() {
+                const userCount = generateUserCount();
+                appContainer.innerHTML = `
+                    <div class="flex items-center justify-center mb-4">
+                        <span class="text-4xl">🛠️</span>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-700 mb-2">TECHPRECISION972</h2>
+                    <h1 class="text-4xl font-bold text-gray-800 mb-2">Quel système utilisez-vous ?</h1>
+                    <p class="text-gray-600 mb-8">
+                        Sélectionnez la marque de votre appareil pour obtenir des conseils sur mesure.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div data-os="windows" class="card-hover cursor-pointer p-8 bg-blue-100 rounded-2xl shadow-md transition-all duration-300 transform">
+                            <div class="text-6xl mb-4">🪟</div>
+                            <h3 class="text-xl font-bold text-blue-800">Ordinateur Windows</h3>
+                        </div>
+                        <div data-os="mac" class="card-hover cursor-pointer p-8 bg-gray-100 rounded-2xl shadow-md transition-all duration-300 transform">
+                            <div class="text-6xl mb-4">🍏</div>
+                            <h3 class="text-xl font-bold text-gray-800">Ordinateur Mac</h3>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-400 mt-6">
+                        Vous êtes la **${userCount}**e personne à utiliser l'utilitaire.
+                    </p>
+                `;
+            }
+
+            // Fonction pour afficher la liste des problèmes pour le système choisi
+            function showProblemList(os) {
+                if (os === 'windows') {
+                    currentProblems = windowsProblems;
+                } else if (os === 'mac') {
+                    currentProblems = macProblems;
+                }
+
+                let cardsHtml = '';
+                for (const key in currentProblems) {
+                    if (currentProblems.hasOwnProperty(key)) {
+                        const problem = currentProblems[key];
+                        const icon = {
+                            'no-power': '💻',
+                            'password-forgotten': '🔑',
+                            'battery-not-charging': '🔋',
+                            'dark-screen': '💡',
+                            'slow-computer': '🐌',
+                            'wifi-down': '📶',
+                            'input-device-fail': '🖱️',
+                            'other-problem': '🤷'
+                        }[key];
+                        const bgColor = {
+                            'no-power': 'bg-purple-100',
+                            'password-forgotten': 'bg-blue-100',
+                            'battery-not-charging': 'bg-green-100',
+                            'dark-screen': 'bg-yellow-100',
+                            'slow-computer': 'bg-red-100',
+                            'wifi-down': 'bg-orange-100',
+                            'input-device-fail': 'bg-pink-100',
+                            'other-problem': 'bg-gray-200'
+                        }[key];
+                        const textColor = {
+                            'no-power': 'text-purple-800',
+                            'password-forgotten': 'text-blue-800',
+                            'battery-not-charging': 'text-green-800',
+                            'dark-screen': 'text-yellow-800',
+                            'slow-computer': 'text-red-800',
+                            'wifi-down': 'text-orange-800',
+                            'input-device-fail': 'text-pink-800',
+                            'other-problem': 'text-gray-800'
+                        }[key];
+
+                        cardsHtml += `
+                            <div data-problem="${key}" class="card-hover cursor-pointer p-6 ${bgColor} rounded-2xl shadow-md transition-all duration-300 transform">
+                                <div class="text-3xl mb-2">${icon}</div>
+                                <h3 class="text-lg font-semibold ${textColor}">${problem.title}</h3>
+                            </div>
+                        `;
+                    }
+                }
+
+                appContainer.innerHTML = `
+                    <div class="flex items-center justify-between mb-4">
+                         <button id="back-to-os" class="bg-gray-200 text-gray-800 px-4 py-2 rounded-full font-semibold hover:bg-gray-300 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 inline-block mr-1">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                            </svg>
+                            Retour
+                        </button>
+                    </div>
+                    <div class="flex items-center justify-center mb-4">
+                        <span class="text-4xl">🛠️</span>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-700 mb-2">TECHPRECISION972</h2>
+                    <h1 class="text-4xl font-bold text-gray-800 mb-2">Quel soucis rencontrez-vous ?</h1>
+                    <p class="text-gray-600 mb-8">
+                        Sélectionnez votre problème pour obtenir des étapes de dépannage simples et rapides.
+                    </p>
+                    <div id="problems-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        ${cardsHtml}
+                    </div>
+                `;
+
+                // Attache les écouteurs d'événements aux nouvelles cartes et au bouton de retour
+                document.getElementById('problems-container').addEventListener('click', handleProblemClick);
+                document.getElementById('back-to-os').addEventListener('click', showOSSelection);
+            }
+
+            // Gère le clic sur un problème
+            function handleProblemClick(event) {
                 let card = event.target.closest('[data-problem]');
                 if (card) {
                     const problemKey = card.dataset.problem;
-                    const problemData = solutions[problemKey];
+                    const problemData = currentProblems[problemKey];
                     const ticketNumber = generateTicketNumber();
 
                     if (problemData) {
@@ -250,7 +374,7 @@
                             </div>
                             <h2 class="text-2xl font-bold mb-4 text-gray-800">${problemData.title}</h2>
                         `;
-
+                        
                         // Afficher les étapes seulement si le problème en a
                         if (problemData.steps.length > 0) {
                             contentHTML += '<ul class="list-disc list-inside space-y-2 text-left text-gray-700">';
@@ -263,9 +387,6 @@
                         // Message final avec les liens de contact
                         const prefilledWhatsappText = `Bonjour, je vous contacte suite à un problème informatique. Mon numéro de ticket est : ${ticketNumber}.`;
                         const prefilledWhatsappLink = `${whatsappLink}&text=${encodeURIComponent(prefilledWhatsappText)}`;
-                        
-                        // Nous ne pouvons pas pré-remplir le numéro de ticket dans un formulaire Google de manière fiable sans l'Entry ID.
-                        // Nous fournissons donc le lien de base pour que l'utilisateur puisse le remplir manuellement.
                         const googleFormsFinalLink = `${googleFormsLink}`;
 
                         contentHTML += `
@@ -309,6 +430,14 @@
                         });
                     }
                 }
+            }
+
+            // Gère le clic sur le choix de l'OS
+            appContainer.addEventListener('click', (event) => {
+                let osCard = event.target.closest('[data-os]');
+                if (osCard) {
+                    showProblemList(osCard.dataset.os);
+                }
             });
 
             // Écouteur d'événement pour fermer la modale
@@ -327,6 +456,9 @@
                     modal.classList.remove('is-active');
                 }
             });
+
+            // Affiche la page de sélection de l'OS au chargement
+            showOSSelection();
         });
     </script>
 </body>
