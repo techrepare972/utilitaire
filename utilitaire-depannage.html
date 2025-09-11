@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Utilitaire de Dépannage Informatique</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .gradient-bg {
+            background-image: linear-gradient(to right top, #6a40a8, #8a58b5, #a971c2, #c98ace, #e9a3db);
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        /* Styles de la modale */
+        .modal {
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+            opacity: 0;
+            visibility: hidden;
+        }
+        .modal.is-active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .contact-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: 500;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .contact-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .copy-button {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .copy-button:hover {
+            transform: scale(1.05);
+            color: #4a5568;
+        }
+    </style>
+</head>
+<body class="gradient-bg flex items-center justify-center min-h-screen p-4">
+
+    <!-- Conteneur principal -->
+    <div class="w-full max-w-4xl p-8 bg-white rounded-3xl shadow-2xl text-center">
+        <div class="flex items-center justify-center mb-4">
+            <span class="text-4xl">🛠️</span>
+        </div>
+        <h2 class="text-2xl font-bold text-gray-700 mb-2">TECHPRECISION972</h2>
+        <h1 class="text-4xl font-bold text-gray-800 mb-2">Utilitaire de Dépannage</h1>
+        <p class="text-gray-600 mb-8">
+            Sélectionnez votre problème pour obtenir des étapes de dépannage simples et rapides.
+        </p>
+
+        <!-- Grille des cartes de problèmes -->
+        <div id="problems-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+            <!-- Carte : L'ordinateur ne s'allume pas -->
+            <div data-problem="no-power" class="card-hover cursor-pointer p-6 bg-purple-100 rounded-2xl shadow-md transition-all duration-300 transform">
+                <div class="text-3xl mb-2">💻</div>
+                <h3 class="text-lg font-semibold text-purple-800">L'ordinateur ne s'allume pas</h3>
+            </div>
+
+            <!-- Carte : Mot de passe oublié -->
+            <div data-problem="password-forgotten" class="card-hover cursor-pointer p-6 bg-blue-100 rounded-2xl shadow-md transition-all duration-300 transform">
+                <div class="text-3xl mb-2">🔑</div>
+                <h3 class="text-lg font-semibold text-blue-800">Mot de passe oublié</h3>
+            </div>
+
+            <!-- Carte : La batterie ne charge pas -->
+            <div data-problem="battery-not-charging" class="card-hover cursor-pointer p-6 bg-green-100 rounded-2xl shadow-md transition-all duration-300 transform">
+                <div class="text-3xl mb-2">🔋</div>
+                <h3 class="text-lg font-semibold text-green-800">La batterie ne charge pas</h3>
+            </div>
+
+            <!-- Carte : L'écran est sombre -->
+            <div data-problem="dark-screen" class="card-hover cursor-pointer p-6 bg-yellow-100 rounded-2xl shadow-md transition-all duration-300 transform">
+                <div class="text-3xl mb-2">💡</div>
+                <h3 class="text-lg font-semibold text-yellow-800">L'écran est sombre</h3>
+            </div>
+
+            <!-- NOUVELLES CARTES -->
+            <!-- Carte : L'ordinateur est lent -->
+            <div data-problem="slow-computer" class="card-hover cursor-pointer p-6 bg-red-100 rounded-2xl shadow-md transition-all duration-300 transform">
+                <div class="text-3xl mb-2">🐌</div>
+                <h3 class="text-lg font-semibold text-red-800">Mon ordinateur est lent</h3>
+            </div>
+
+            <!-- Carte : Wi-Fi ne fonctionne pas -->
+            <div data-problem="wifi-down" class="card-hover cursor-pointer p-6 bg-orange-100 rounded-2xl shadow-md transition-all duration-300 transform">
+                <div class="text-3xl mb-2">📶</div>
+                <h3 class="text-lg font-semibold text-orange-800">Le Wi-Fi ne se connecte pas</h3>
+            </div>
+
+            <!-- Carte : Souris/Clavier ne fonctionne pas -->
+            <div data-problem="input-device-fail" class="card-hover cursor-pointer p-6 bg-pink-100 rounded-2xl shadow-md transition-all duration-300 transform">
+                <div class="text-3xl mb-2">🖱️</div>
+                <h3 class="text-lg font-semibold text-pink-800">La souris ou le clavier ne fonctionne pas</h3>
+            </div>
+            
+            <!-- NOUVELLE CARTE "AUTRE PROBLÈME" -->
+            <div data-problem="other-problem" class="card-hover cursor-pointer p-6 bg-gray-200 rounded-2xl shadow-md transition-all duration-300 transform">
+                <div class="text-3xl mb-2">🤷</div>
+                <h3 class="text-lg font-semibold text-gray-800">Autre Problème</h3>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- Modale pour les étapes de dépannage -->
+    <div id="modal" class="modal fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
+        <div class="bg-white rounded-2xl p-8 max-w-xl w-full shadow-lg relative max-h-[90vh] overflow-y-auto">
+            <button id="close-modal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">
+                &times;
+            </button>
+            <div id="modal-content">
+                <!-- Les étapes de dépannage et le message de contact seront injectés ici par JavaScript -->
+            </div>
+            <div class="flex justify-center mt-6">
+                 <button id="back-button" class="bg-gray-200 text-gray-800 px-6 py-2 rounded-full font-semibold hover:bg-gray-300 transition-colors">Retour</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const problemsContainer = document.getElementById('problems-container');
+            const modal = document.getElementById('modal');
+            const modalContent = document.getElementById('modal-content');
+            const closeModalBtn = document.getElementById('close-modal');
+            const backButton = document.getElementById('back-button');
+
+            // Ces liens sont ceux que vous avez fournis
+            const googleFormsLink = "https://forms.gle/MWtNaPYrcdne9q1Z9";
+            const whatsappLink = "https://wa.me/message/EUICLD2JHWORN1";
+            const phoneNumber = "+596696600814";
+
+            // Fonction pour générer un numéro de ticket aléatoire à 3 chiffres
+            function generateTicketNumber() {
+                const number = Math.floor(100 + Math.random() * 900);
+                return `TP972-${number}`;
+            }
+
+            const solutions = {
+                'no-power': {
+                    title: 'L\'ordinateur ne s\'allume pas',
+                    steps: [
+                        'Vérifiez que le câble d\'alimentation est bien branché à l\'ordinateur et à la prise murale.',
+                        'Essayez une autre prise de courant pour vous assurer qu\'elle fonctionne.',
+                        'Si c\'est un ordinateur portable, assurez-vous que la batterie est chargée ou essayez de l\'allumer sans la batterie, uniquement avec le chargeur.',
+                        'Si vous avez un ordinateur de bureau, vérifiez que l\'interrupteur d\'alimentation à l\'arrière du boîtier est bien sur la position "ON".'
+                    ]
+                },
+                'password-forgotten': {
+                    title: 'Mot de passe oublié',
+                    steps: [
+                        'Pour Windows, essayez l\'option "J\'ai oublié mon mot de passe" ou "Réinitialiser le mot de passe" sur l\'écran de connexion.',
+                        'Pour macOS, redémarrez votre Mac et maintenez les touches "Command" + "R" enfoncées pour accéder aux utilitaires de récupération.',
+                        'Sur les téléphones, utilisez la fonction de récupération de compte de Google ou d\'Apple pour réinitialiser le mot de passe.',
+                        'Si aucune de ces méthodes ne fonctionne, vous devrez peut-être réinstaller le système d\'exploitation.'
+                    ]
+                },
+                'battery-not-charging': {
+                    title: 'La batterie ne charge pas',
+                    steps: [
+                        'Assurez-vous que le chargeur est bien branché et fonctionne en essayant une autre prise.',
+                        'Redémarrez l\'ordinateur. Parfois, un simple redémarrage peut résoudre un bug logiciel qui empêche la charge.',
+                        'Vérifiez qu\'il n\'y a pas de saleté ou de débris dans le port de charge de votre ordinateur.',
+                        'Si possible, essayez d\'utiliser un autre chargeur compatible pour voir si le problème vient du chargeur actuel.'
+                    ]
+                },
+                'dark-screen': {
+                    title: 'L\'écran est sombre',
+                    steps: [
+                        'Appuyez sur les touches de fonction de votre clavier qui contrôlent la luminosité (souvent avec un symbole de soleil).',
+                        'Redémarrez l\'ordinateur. Un bug d\'affichage peut être corrigé de cette façon.',
+                        'Assurez-vous que l\'ordinateur n\'est pas en mode "économie d\'énergie" qui réduit la luminosité automatiquement.',
+                        'Si l\'écran reste noir, il peut y avoir un problème avec le moniteur ou la carte graphique. Essayez de brancher un moniteur externe si vous en avez un.'
+                    ]
+                },
+                'slow-computer': {
+                    title: 'Mon ordinateur est lent',
+                    steps: [
+                        'Redémarrez l\'ordinateur. C\'est la solution la plus simple et souvent la plus efficace.',
+                        'Fermez les applications que vous n\'utilisez pas. Un grand nombre de programmes ouverts ralentit la machine.',
+                        'Vérifiez l\'espace disque disponible. Si votre disque est presque plein, cela peut ralentir considérablement votre PC.',
+                        'Faites un scan antivirus pour vous assurer qu\'aucun logiciel malveillant ne tourne en arrière-plan.'
+                    ]
+                },
+                'wifi-down': {
+                    title: 'Le Wi-Fi ne se connecte pas',
+                    steps: [
+                        'Redémarrez votre routeur (votre box internet). Débranchez-le, attendez 30 secondes, puis rebranchez-le.',
+                        'Sur votre ordinateur, désactivez et réactivez le Wi-Fi. Parfois, cela suffit à relancer la connexion.',
+                        'Vérifiez le mot de passe du réseau Wi-Fi. Assurez-vous qu\'il est correctement saisi.',
+                        'Si le problème persiste, essayez de connecter un autre appareil au même réseau. Si aucun appareil ne se connecte, le problème vient probablement de votre routeur ou de votre fournisseur internet.'
+                    ]
+                },
+                'input-device-fail': {
+                    title: 'La souris ou le clavier ne fonctionne pas',
+                    steps: [
+                        'Si c\'est sans fil, vérifiez les piles ou la batterie. Assurez-vous qu\'elles sont bien chargées.',
+                        'Si c\'est un appareil USB, essayez de le brancher sur un autre port USB de votre ordinateur.',
+                        'Si l\'appareil est un clavier d\'ordinateur portable, essayez de le nettoyer. La poussière ou les débris peuvent empêcher le bon fonctionnement des touches.',
+                        'Redémarrez votre ordinateur. Cela peut résoudre les conflits de pilotes qui bloquent l\'appareil.'
+                    ]
+                },
+                'other-problem': {
+                    title: 'Assistance personnalisée',
+                    steps: [] // Pas d'étapes de dépannage pour cette option
+                }
+            };
+
+            // Écouteur d'événement pour les cartes de problèmes
+            problemsContainer.addEventListener('click', (event) => {
+                let card = event.target.closest('[data-problem]');
+                if (card) {
+                    const problemKey = card.dataset.problem;
+                    const problemData = solutions[problemKey];
+                    const ticketNumber = generateTicketNumber();
+
+                    if (problemData) {
+                        let contentHTML = `
+                            <div class="text-left mb-6 p-4 bg-gray-100 rounded-xl">
+                                <p class="text-sm font-semibold text-gray-500">Votre numéro de ticket :</p>
+                                <div class="flex items-center justify-between">
+                                    <p id="ticket-number-display" class="text-3xl font-bold text-gray-800">${ticketNumber}</p>
+                                    <button id="copy-ticket" class="text-gray-400 hover:text-gray-600 transition-colors">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v-.938c0-.621-.52-1.125-1.164-1.125h-5.316a1.125 1.125 0 01-1.164-1.125v-1.077a.896.896 0 00-.896-.896h-1.077a1.125 1.125 0 01-1.125-1.125V9.071m9.67-4.485c.622 0 1.126.504 1.126 1.126V15.54L17.75 17.25h-.938m-7.25-2.25H9.071c-.622 0-1.126.504-1.126 1.126v1.492m9.67-4.485V6.75h-2.164a1.125 1.125 0 01-1.164-1.125V4.5m-5.316-2.25v-1.077a.896.896 0 00-.896-.896h-1.077A1.125 1.125 0 014.5 4.071v2.164" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <p class="text-sm text-gray-600 mt-2">
+                                    Veuillez noter ce numéro ou le copier pour un suivi plus rapide.
+                                </p>
+                            </div>
+                            <h2 class="text-2xl font-bold mb-4 text-gray-800">${problemData.title}</h2>
+                        `;
+
+                        // Afficher les étapes seulement si le problème en a
+                        if (problemData.steps.length > 0) {
+                            contentHTML += '<ul class="list-disc list-inside space-y-2 text-left text-gray-700">';
+                            problemData.steps.forEach(step => {
+                                contentHTML += `<li>${step}</li>`;
+                            });
+                            contentHTML += '</ul>';
+                        }
+                        
+                        // Message final avec les liens de contact
+                        const prefilledWhatsappText = `Bonjour, je vous contacte suite à un problème informatique. Mon numéro de ticket est : ${ticketNumber}.`;
+                        const prefilledWhatsappLink = `${whatsappLink}&text=${encodeURIComponent(prefilledWhatsappText)}`;
+                        
+                        // Nous ne pouvons pas pré-remplir le numéro de ticket dans un formulaire Google de manière fiable sans l'Entry ID.
+                        // Nous fournissons donc le lien de base pour que l'utilisateur puisse le remplir manuellement.
+                        const googleFormsFinalLink = `${googleFormsLink}`;
+
+                        contentHTML += `
+                            <p class="mt-8 text-lg font-semibold text-gray-800">
+                                Le problème persiste ? Ne vous inquiétez pas !
+                            </p>
+                            <p class="text-sm text-gray-600 mb-4">
+                                Remplissez notre formulaire, contactez-nous via WhatsApp ou appelez-nous directement pour une assistance personnalisée.
+                            </p>
+                            <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4 mt-6">
+                                <a href="${googleFormsFinalLink}" target="_blank" class="contact-link bg-purple-600 text-white hover:bg-purple-700">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM5 7a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zM5 11a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zM9 15a1 1 0 011-1h4a1 1 0 110 2h-4a1 1 0 01-1-1z" />
+                                    </svg>
+                                    Formulaire
+                                </a>
+                                <a href="${prefilledWhatsappLink}" target="_blank" class="contact-link bg-green-500 text-white hover:bg-green-600">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-2.094 17.519c-.482-.093-2.883-1.189-3.292-1.336-.263-.09-.504-.148-.716.326-.201.442-.647 1.76-1.025 1.904-.325.127-.638.257-.962.22-.32-.036-.707-.15-.707-.492 0-.274.341-.409 1.144-1.294 1.157-1.123 2.502-2.527 2.657-2.735.155-.208.05-.333-.102-.478-.155-.144-.338-.285-.504-.424-.16-.134-.33-.314-.24-.515.09-.2.686-1.638.966-2.316.28-.679.564-.61.849-.61s.579-.047.884-.047c.299 0 .385.127.487.359.102.232.355.859.458 1.071.102.212.172.247.319.46.147.213.916 1.503.916 1.836 0 .333-.357.519-.357.519-.395.201-.637.31-.914.457-.277.146-.615.421-.357.734.258.312.984 1.439 1.258 1.636.273.197.358.319.461.431.103.111.106.182.072.348-.035.166-.46.862-.573 1.092-.112.23-.223.359-.446.471-.223.112-.497.165-.91.077z"/>
+                                    </svg>
+                                    WhatsApp
+                                </a>
+                                <a href="tel:${phoneNumber}" class="contact-link bg-slate-600 text-white hover:bg-slate-700">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M16.996 14.869c-.838-.052-.102-.782-.479-.933-.49-.193-.727-.221-1.229-.221-1.079 0-1.896-.549-2.617-1.272-.72-1.23-1.282-2.639-1.282-3.834 0-.498.028-.739.221-1.229.15-.377.88-.661.933-.479.839.052.102.782.479.933.49.193.727.221 1.229.221 1.079 0 1.896.549 2.617 1.272.72 1.23 1.282 2.639 1.282 3.834 0 .498-.028.739-.221 1.229-.15.377-.88.661-.933.479zM12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm2.094 17.519c-.482-.093-2.883-1.189-3.292-1.336-.263-.09-.504-.148-.716.326-.201.442-.647 1.76-1.025 1.904-.325.127-.638.257-.962.22-.32-.036-.707-.15-.707-.492 0-.274.341-.409 1.144-1.294 1.157-1.123 2.502-2.527 2.657-2.735.155-.208.05-.333-.102-.478-.155-.144-.338-.285-.504-.424-.16-.134-.33-.314-.24-.515.09-.2.686-1.638.966-2.316.28-.679.564-.61.849-.61s.579-.047.884-.047c.299 0 .385.127.487.359.102.232.355.859.458 1.071.102.212.172.247.319.46.147.213.916 1.503.916 1.836 0 .333-.357.519-.357.519-.395.201-.637.31-.914.457-.277.146-.615.421-.357.734.258.312.984 1.439 1.258 1.636.273.197.358.319.461.431.103.111.106.182.072.348-.035.166-.46.862-.573 1.092-.112.23-.223.359-.446.471-.223.112-.497.165-.91.077z"/>
+                                    </svg>
+                                    Appeler
+                                </a>
+                            </div>
+                        `;
+
+                        modalContent.innerHTML = contentHTML;
+                        modal.classList.add('is-active'); // Affiche la modale
+                        
+                        // Ajoute la fonction de copie après que le contenu soit injecté
+                        document.getElementById('copy-ticket').addEventListener('click', () => {
+                            const ticketNumberText = document.getElementById('ticket-number-display').textContent;
+                            navigator.clipboard.writeText(ticketNumberText).then(() => {
+                                // Vous pouvez ajouter un feedback visuel ici si vous le souhaitez, par ex. un petit message "Copié !"
+                            });
+                        });
+                    }
+                }
+            });
+
+            // Écouteur d'événement pour fermer la modale
+            closeModalBtn.addEventListener('click', () => {
+                modal.classList.remove('is-active');
+            });
+            
+            // Écouteur pour le bouton "Retour"
+            backButton.addEventListener('click', () => {
+                modal.classList.remove('is-active');
+            });
+
+            // Ferme la modale si l'utilisateur clique en dehors
+            modal.addEventListener('click', (event) => {
+                if (event.target === modal) {
+                    modal.classList.remove('is-active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
