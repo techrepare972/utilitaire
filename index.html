@@ -89,7 +89,9 @@
 
             // Vos liens sont ici
             const googleFormsLink = "https://forms.gle/MWtNaPYrcdne9q1Z9";
-            const whatsappLink = "https://wa.me/message/EUICLD2JHWORN1";
+            const whatsappLink = "https://wa.me/596696600814"; // Ceci est le lien de base pour le numéro
+            const prefilledWhatsappText = `Bonjour, je vous contacte suite à un problème informatique. Mon numéro de ticket est : ${ticketNumber}.`;
+            const prefilledWhatsappLink = `${whatsappLink}&text=${encodeURIComponent(prefilledWhatsappText)}`;
             const phoneNumber = "+596696600814";
 
             // Fonction pour générer un numéro de ticket aléatoire
@@ -463,4 +465,5 @@
     </script>
 </body>
 </html>
+
 
