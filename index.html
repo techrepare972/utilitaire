@@ -82,25 +82,27 @@
             const closeModalBtn = document.getElementById('close-modal');
             const backButton = document.getElementById('back-button');
 
-            // Vos liens sont ici
             const googleFormsLink = "https://forms.gle/MWtNaPYrcdne9q1Z9";
-            const whatsappBaseLink = "https://wa.me/596696600814"; // Lien de base WhatsApp (CORRIGÉ)
-            const phoneNumber = "+596696600814";
+            const rawPhoneNumber = "+596696600814"; 
+            
+            function cleanPhoneNumberForWhatsapp(num) {
+                return num.replace(/\D/g, ''); // Supprime tous les caractères non numériques
+            }
 
-            let ticketNumber = ""; // Déclarer ticketNumber globalement pour qu'il soit accessible (CORRIGÉ)
+            const phoneNumber = rawPhoneNumber; // Pour le lien d'appel tel:
 
-            // Fonction pour générer un numéro de ticket aléatoire
+            let ticketNumber = ""; 
+
             function generateTicketNumber() {
                 const number = Math.floor(100 + Math.random() * 900);
                 return `TP972-${number}`;
             }
             
-            // Fonction pour générer un nombre de personnes aléatoire pour le compteur
             function generateUserCount() {
                 return Math.floor(1000 + Math.random() * 9000);
             }
 
-            // Données pour les problèmes Windows
+            // Données pour les problèmes Windows (inchangées)
             const windowsProblems = {
                 'no-power': {
                     title: 'L\'ordinateur ne s\'allume pas (Windows)',
@@ -169,7 +171,7 @@
                 }
             };
             
-            // Données pour les problèmes Apple
+            // Données pour les problèmes Apple (inchangées)
             const macProblems = {
                 'no-power': {
                     title: 'Le Mac ne s\'allume pas (Apple)',
@@ -238,7 +240,6 @@
 
             let currentProblems = {};
 
-            // Fonction pour afficher la page de sélection du système d'exploitation
             function showOSSelection() {
                 const userCount = generateUserCount();
                 appContainer.innerHTML = `
@@ -266,7 +267,6 @@
                 `;
             }
 
-            // Fonction pour afficher la liste des problèmes pour le système choisi
             function showProblemList(os) {
                 if (os === 'windows') {
                     currentProblems = windowsProblems;
@@ -340,18 +340,16 @@
                     </div>
                 `;
 
-                // Attache les écouteurs d'événements aux nouvelles cartes et au bouton de retour
                 document.getElementById('problems-container').addEventListener('click', handleProblemClick);
                 document.getElementById('back-to-os').addEventListener('click', showOSSelection);
             }
 
-            // Gère le clic sur un problème
             function handleProblemClick(event) {
                 let card = event.target.closest('[data-problem]');
                 if (card) {
                     const problemKey = card.dataset.problem;
                     const problemData = currentProblems[problemKey];
-                    ticketNumber = generateTicketNumber(); // Assigner le ticketNumber à la variable globale (CORRIGÉ)
+                    ticketNumber = generateTicketNumber(); 
 
                     if (problemData) {
                         let contentHTML = `
@@ -372,7 +370,6 @@
                             <h2 class="text-2xl font-bold mb-4 text-gray-800">${problemData.title}</h2>
                         `;
                         
-                        // Afficher les étapes seulement si le problème en a
                         if (problemData.steps.length > 0) {
                             contentHTML += '<ul class="list-disc list-inside space-y-2 text-left text-gray-700">';
                             problemData.steps.forEach(step => {
@@ -381,11 +378,20 @@
                             contentHTML += '</ul>';
                         }
                         
-                        // Message final avec les liens de contact
-                        // Ces variables sont maintenant initialisées DANS la fonction, après que ticketNumber soit défini (CORRIGÉ)
                         const prefilledWhatsappText = `Bonjour, je vous contacte suite à un problème informatique. Mon numéro de ticket est : ${ticketNumber}.`;
-                        const prefilledWhatsappLink = `${whatsappBaseLink}&text=${encodeURIComponent(prefilledWhatsappText)}`; // Utilisez whatsappBaseLink (CORRIGÉ)
+                        const cleanedWhatsappNumber = cleanPhoneNumberForWhatsapp(rawPhoneNumber); 
+                        const prefilledWhatsappLink = `https://wa.me/${cleanedWhatsappNumber}?text=${encodeURIComponent(prefilledWhatsappText)}`; // Utilisez le ? ici
+
                         const googleFormsFinalLink = `${googleFormsLink}`;
+
+                        // AJOUT DE CONSOLE.LOG POUR DEBUG
+                        console.log("--- DEBUG WHATSAPP LINK ---");
+                        console.log("rawPhoneNumber:", rawPhoneNumber);
+                        console.log("cleanedWhatsappNumber:", cleanedWhatsappNumber);
+                        console.log("prefilledWhatsappText:", prefilledWhatsappText);
+                        console.log("prefilledWhatsappLink FINAL:", prefilledWhatsappLink);
+                        console.log("-------------------------");
+
 
                         contentHTML += `
                             <p class="mt-8 text-lg font-semibold text-gray-800">
@@ -404,62 +410,54 @@
                                 <a href="${prefilledWhatsappLink}" target="_blank" class="contact-link bg-green-500 text-white hover:bg-green-600">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
                                         <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-2.094 17.519c-.482-.093-2.883-1.189-3.292-1.336-.263-.09-.504-.148-.716.326-.201.442-.647 1.76-1.025 1.904-.325.127-.638.257-.962.22-.32-.036-.707-.15-.707-.492 0-.274.341-.409 1.144-1.294 1.157-1.123 2.502-2.527 2.657-2.735.155-.208.05-.333-.102-.478-.155-.144-.338-.285-.504-.424-.16-.134-.33-.314-.24-.515.09-.2.686-1.638.966-2.316.28-.679.564-.61.849-.61s.579-.047.884-.047c.299 0 .385.127.487.359.102.232.355.859.458 1.071.102.212.172.247.319.46.147.213.916 1.503.916 1.836 0 .333-.357.519-.357.519-.395.201-.637.31-.914.457-.277.146-.615.421-.357.734.258.312.984 1.439 1.258 1.636.273.197.358.319.461.431.103.111.106.182.072.348-.035.166-.46.862-.573 1.092-.112.23-.223.359-.446.471-.223.112-.497.165-.91.077z"/>
-                                    </svg>
-                                    WhatsApp
-                                </a>
-                                <a href="tel:${phoneNumber}" class="contact-link bg-slate-600 text-white hover:bg-slate-700">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M16.996 14.869c-.838-.052-.102-.782-.479-.933-.49-.193-.727-.221-1.229-.221-1.079 0-1.896-.549-2.617-1.272-.72-1.23-1.282-2.639-1.282-3.834 0-.498.028-.739.221-1.229.15-.377.88-.661.933-.479.839.052.102.782.479.933.49.193.727.221 1.229.221 1.079 0 1.896.549 2.617 1.272.72 1.23 1.282 2.639 1.282 3.834 0 .498-.028.739-.221 1.229-.15.377-.88.661-.933.479zM12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm2.094 17.519c-.482-.093-2.883-1.189-3.292-1.336-.263-.09-.504-.148-.716.326-.201.442-.647 1.76-1.025 1.904-.325.127-.638.257-.962.22-.32-.036-.707-.15-.707-.492 0-.274.341-.409 1.144-1.294 1.157-1.123 2.502-2.527 2.657-2.735.155-.208.05-.333-.102-.478-.155-.144-.338-.285-.504-.424-.16-.134-.33-.314-.24-.515.09-.2.686-1.638.966-2.316.28-.679.564-.61.849-.61s.579-.047.884-.047c.299 0 .385.127.487.359.102.232.355.859.458 1.071.102.212.172.247.319.46.147.213.916 1.503.916 1.836 0 .333-.357.519-.357.519-.395.201-.637.31-.914.457-.277.146-.615.421-.357.734.258.312.984 1.439 1.258 1.636.273.197.358.319.461.431.103.111.106.182.072.348-.035.166-.46.862-.573 1.092-.112.23-.223.359-.446.471-.223.112-.497.165-.91.077z"/>
-                                    </svg>
-                                    Appeler
-                                </a>
-                            </div>
-                        `;
+                            </svg>
+                            WhatsApp
+                        </a>
+                        <a href="tel:${phoneNumber}" class="contact-link bg-slate-600 text-white hover:bg-slate-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M16.996 14.869c-.838-.052-.102-.782-.479-.933-.49-.193-.727-.221-1.229-.221-1.079 0-1.896-.549-2.617-1.272-.72-1.23-1.282-2.639-1.282-3.834 0-.498.028-.739.221-1.229.15-.377.88-.661.933-.479.839.052.102.782.479.933.49.193.727.221 1.229.221 1.079 0 1.896.549 2.617 1.272.72 1.23 1.282 2.639 1.282 3.834 0 .498-.028-.739-.221 1.229-.15.377-.88.661-.933.479zM12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm2.094 17.519c-.482-.093-2.883-1.189-3.292-1.336-.263-.09-.504-.148-.716.326-.201.442-.647 1.76-1.025 1.904-.325.127-.638.257-.962.22-.32-.036-.707-.15-.707-.492 0-.274.341-.409 1.144-1.294 1.157-1.123 2.502-2.527 2.657-2.735.155-.208.05-.333-.102-.478-.155-.144-.338-.285-.504-.424-.16-.134-.33-.314-.24-.515.09-.2.686-1.638.966-2.316.28-.679.564-.61.849-.61s.579-.047.884-.047c.299 0 .385.127.487.359.102.232.355.859.458 1.071.102.212.172.247.319.46.147.213.916 1.503.916 1.836 0 .333-.357.519-.357.519-.395.201-.637.31-.914.457-.277.146-.615.421-.357.734.258.312.984 1.439 1.258 1.636.273.197.358.319.461.431.103.111.106.182.072.348-.035.166-.46.862-.573 1.092-.112.23-.223.359-.446.471-.223.112-.497.165-.91.077z"/>
+                            </svg>
+                            Appeler
+                        </a>
+                    </div>
+                `;
 
-                        modalContent.innerHTML = contentHTML;
-                        modal.classList.add('is-active'); // Affiche la modale
-                        
-                        // Ajoute la fonction de copie après que le contenu soit injecté
-                        document.getElementById('copy-ticket').addEventListener('click', () => {
-                            const ticketNumberText = document.getElementById('ticket-number-display').textContent;
-                            navigator.clipboard.writeText(ticketNumberText).then(() => {
-                                // Vous pouvez ajouter un feedback visuel ici si vous le souhaitez, par ex. un petit message "Copié !"
-                            });
-                        });
-                    }
-                }
+                modalContent.innerHTML = contentHTML;
+                modal.classList.add('is-active'); 
+                
+                document.getElementById('copy-ticket').addEventListener('click', () => {
+                    const ticketNumberText = document.getElementById('ticket-number-display').textContent;
+                    navigator.clipboard.writeText(ticketNumberText).then(() => {
+                        // Feedback de copie
+                    });
+                });
             }
+        }
+    }
 
-            // Gère le clic sur le choix de l'OS
-            appContainer.addEventListener('click', (event) => {
-                let osCard = event.target.closest('[data-os]');
-                if (osCard) {
-                    showProblemList(osCard.dataset.os);
-                }
-            });
+    appContainer.addEventListener('click', (event) => {
+        let osCard = event.target.closest('[data-os]');
+        if (osCard) {
+            showProblemList(osCard.dataset.os);
+        }
+    });
 
-            // Écouteur d'événement pour fermer la modale
-            closeModalBtn.addEventListener('click', () => {
-                modal.classList.remove('is-active');
-            });
-            
-            // Écouteur pour le bouton "Retour"
-            backButton.addEventListener('click', () => {
-                modal.classList.remove('is-active');
-            });
+    closeModalBtn.addEventListener('click', () => {
+        modal.classList.remove('is-active');
+    });
+    
+    backButton.addEventListener('click', () => {
+        modal.classList.remove('is-active');
+    });
 
-            // Ferme la modale si l'utilisateur clique en dehors
-            modal.addEventListener('click', (event) => {
-                if (event.target === modal) {
-                    modal.classList.remove('is-active');
-                }
-            });
+    modal.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            modal.classList.remove('is-active');
+        }
+    });
 
-            // Affiche la page de sélection de l'OS au chargement
-            showOSSelection();
-        });
+    showOSSelection();
+});
     </script>
 </body>
 </html>
-
-
