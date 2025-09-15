@@ -1,463 +1,371 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Utilitaire de Dépannage Informatique</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6;
-        }
-        .gradient-bg {
-            background-image: linear-gradient(to right top, #6a40a8, #8a58b5, #a971c2, #c98ace, #e9a3db);
-        }
-        .card-hover:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        /* Styles de la modale */
-        .modal {
-            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-            opacity: 0;
-            visibility: hidden;
-        }
-        .modal.is-active {
-            opacity: 1;
-            visibility: visible;
-        }
-        .contact-link {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1.5rem;
-            border-radius: 9999px;
-            font-weight: 500;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .contact-link:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
-        .copy-button {
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .copy-button:hover {
-            transform: scale(1.05);
-            color: #4a5568;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Fiche de Prise en Charge - TechPrecision</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    body { font-family: 'Poppins', sans-serif; background-color: #f0f2f5; }
+    .modal { transition: opacity 0.3s ease; }
+    #signature-pad { border: 1px solid #e2e8f0; border-radius: 8px; background-color: #fff; touch-action: none; }
+  </style>
+  <!-- Libs -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/1.5.3/signature_pad.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
-<body class="gradient-bg flex flex-col items-center justify-center min-h-screen p-4">
+<body class="text-gray-800">
+  <div class="container mx-auto p-4 md:p-8">
+    <!-- HEADER -->
+    <header class="flex flex-col md:flex-row justify-between items-center mb-8">
+      <div class="flex items-center space-x-3 mb-4 md:mb-0">
+        <!-- Chemin logo corrigé -->
+        <img id="header-logo" src="logo.png" alt="Logo Tech Precision" class="h-10 w-10" />
+        <h1 class="text-3xl font-bold text-gray-800">Fiche de Prise en Charge</h1>
+      </div>
+    </header>
 
-    <div id="app-container" class="w-full max-w-4xl p-8 bg-white rounded-3xl shadow-2xl text-center">
+    <!-- FORM -->
+    <div id="intakeContent" class="p-6 bg-white rounded-xl shadow-md">
+      <h2 class="text-2xl font-bold mb-6">Détails de la prise en charge</h2>
+      <form id="intakeForm" class="space-y-6">
+        <div>
+          <label for="intakeClientName" class="block text-sm font-medium text-gray-700">Nom du client</label>
+          <input type="text" id="intakeClientName" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-3" />
         </div>
-
-    <div id="modal" class="modal fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
-        <div class="bg-white rounded-2xl p-8 max-w-xl w-full shadow-lg relative max-h-[90vh] overflow-y-auto">
-            <button id="close-modal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">
-                &times;
-            </button>
-            <div id="modal-content">
-                </div>
-            <div class="flex justify-center mt-6">
-                <button id="back-button" class="bg-gray-200 text-gray-800 px-6 py-2 rounded-full font-semibold hover:bg-gray-300 transition-colors">Retour</button>
-            </div>
+        <div>
+          <label for="intakePhoneNumber" class="block text-sm font-medium text-gray-700">Numéro de téléphone</label>
+          <input type="tel" id="intakePhoneNumber" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-3" />
         </div>
+        <div>
+          <label for="intakeEquipment" class="block text-sm font-medium text-gray-700">Équipement</label>
+          <input type="text" id="intakeEquipment" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-3" />
+        </div>
+        <div>
+          <label for="intakeBrand" class="block text-sm font-medium text-gray-700">Marque</label>
+          <input type="text" id="intakeBrand" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-3" />
+        </div>
+        <div>
+          <label for="intakeProblem" class="block text-sm font-medium text-gray-700">Problème</label>
+          <textarea id="intakeProblem" rows="4" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-3"></textarea>
+        </div>
+        <div>
+          <label for="intakePhoto" class="block text-sm font-medium text-gray-700">Photo de l'équipement</label>
+          <input
+            type="file"
+            id="intakePhoto"
+            accept="image/*"
+            capture="environment"
+            class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+          />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Signature du client</label>
+          <canvas id="signature-pad" class="w-full h-40 bg-gray-50 border border-gray-300 rounded-lg"></canvas>
+          <button type="button" id="clearSignatureBtn" class="mt-2 text-xs text-red-500 hover:text-red-700">Effacer la signature</button>
+        </div>
+        <div class="flex justify-end space-x-4 pt-4">
+          <button type="button" id="saveIntakeBtn" class="bg-indigo-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:bg-indigo-700 transition">
+            Générer le PDF
+          </button>
+        </div>
+      </form>
     </div>
-    
-    <div class="fixed bottom-0 left-0 right-0 p-4 text-center bg-gray-900 bg-opacity-70 z-10">
-        <p class="text-xs text-white">Contactez-nous directement : <a href="tel:+596696600814" class="underline font-semibold">+596 696 60 08 14</a></p>
+  </div>
+
+  <!-- ALERT -->
+  <div id="customAlertModal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-sm text-center transform transition-all scale-95 opacity-0">
+      <h3 class="text-xl font-bold mb-4">Notification</h3>
+      <p id="alertMessage" class="text-gray-700 mb-6"></p>
+      <button id="closeAlertBtn" class="bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-indigo-700 transition">Fermer</button>
     </div>
+  </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const appContainer = document.getElementById('app-container');
-            const modal = document.getElementById('modal');
-            const modalContent = document.getElementById('modal-content');
-            const closeModalBtn = document.getElementById('close-modal');
-            const backButton = document.getElementById('back-button');
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // DOM
+      const intakeForm = document.getElementById('intakeForm');
+      const saveIntakeBtn = document.getElementById('saveIntakeBtn');
+      const signaturePadCanvas = document.getElementById('signature-pad');
+      const clearSignatureBtn = document.getElementById('clearSignatureBtn');
+      const intakePhoto = document.getElementById('intakePhoto');
 
-            const googleFormsLink = "https://forms.gle/MWtNaPYrcdne9q1Z9";
-            const rawPhoneNumber = "+596696600814"; 
-            
-            function cleanPhoneNumberForWhatsapp(num) {
-                return num.replace(/\D/g, ''); // Supprime tous les caractères non numériques
+      // Alert
+      const customAlertModal = document.getElementById('customAlertModal');
+      const alertMessage = document.getElementById('alertMessage');
+      const closeAlertBtn = document.getElementById('closeAlertBtn');
+      const openCustomAlertModal = (message) => {
+        alertMessage.textContent = message;
+        customAlertModal.classList.remove('hidden');
+        setTimeout(() => {
+          customAlertModal.classList.remove('opacity-0');
+          const box = customAlertModal.querySelector('div');
+          box.classList.remove('scale-95', 'opacity-0');
+          box.classList.add('scale-100', 'opacity-100');
+        }, 10);
+      };
+      closeAlertBtn.addEventListener('click', () => {
+        const box = customAlertModal.querySelector('div');
+        box.classList.add('scale-95', 'opacity-0');
+        box.classList.remove('scale-100', 'opacity-100');
+        customAlertModal.classList.add('opacity-0');
+        setTimeout(() => customAlertModal.classList.add('hidden'), 300);
+      });
+
+      // Signature Pad (DPR aware)
+      const signaturePad = new SignaturePad(signaturePadCanvas, { penColor: '#111827' });
+      const resizeSignatureCanvas = () => {
+        const ratio = Math.max(window.devicePixelRatio || 1, 1);
+        const data = signaturePad.toData();
+        signaturePadCanvas.width = signaturePadCanvas.offsetWidth * ratio;
+        signaturePadCanvas.height = signaturePadCanvas.offsetHeight * ratio;
+        signaturePadCanvas.getContext('2d').scale(ratio, ratio);
+        signaturePad.fromData(data);
+      };
+      window.addEventListener('resize', resizeSignatureCanvas);
+      resizeSignatureCanvas();
+      clearSignatureBtn.addEventListener('click', () => signaturePad.clear());
+
+      // Image utils
+      const getImageFormatFromDataUrl = (dataUrl) => {
+        if (!dataUrl) return 'JPEG';
+        if (dataUrl.startsWith('data:image/png')) return 'PNG';
+        if (dataUrl.startsWith('data:image/jpeg') || dataUrl.startsWith('data:image/jpg')) return 'JPEG';
+        return 'JPEG';
+      };
+
+      // Convertit tout fichier image en DataURL JPEG compressé (compat iOS/Android, HEIC -> JPEG)
+      const fileToCompressedJpegDataUrl = (file, maxDim = 1600, quality = 0.85) =>
+        new Promise((resolve, reject) => {
+          if (!file) return resolve(null);
+          const url = URL.createObjectURL(file);
+          const img = new Image();
+          img.onload = () => {
+            try {
+              const { width, height } = img;
+              let targetW = width, targetH = height;
+              if (Math.max(width, height) > maxDim) {
+                const scale = maxDim / Math.max(width, height);
+                targetW = Math.round(width * scale);
+                targetH = Math.round(height * scale);
+              }
+              const canvas = document.createElement('canvas');
+              canvas.width = targetW;
+              canvas.height = targetH;
+              const ctx = canvas.getContext('2d');
+              ctx.drawImage(img, 0, 0, targetW, targetH);
+              const jpegDataUrl = canvas.toDataURL('image/jpeg', quality);
+              URL.revokeObjectURL(url);
+              resolve(jpegDataUrl);
+            } catch (err) {
+              URL.revokeObjectURL(url);
+              reject(err);
             }
+          };
+          img.onerror = (e) => {
+            URL.revokeObjectURL(url);
+            reject(e);
+          };
+          img.src = url;
+        });
 
-            const phoneNumber = rawPhoneNumber; // Pour le lien d'appel tel:
+      // Chargement image (logo) -> HTMLImageElement
+      const loadImage = (src) =>
+        new Promise((resolve, reject) => {
+          const img = new Image();
+          img.onload = () => resolve(img);
+          img.onerror = reject;
+          img.src = src;
+        });
 
-            let ticketNumber = ""; 
+      // Clic: génération PDF (avec pré-ouverture fenêtre iOS/Safari)
+      saveIntakeBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
 
-            function generateTicketNumber() {
-                const number = Math.floor(100 + Math.random() * 900);
-                return `TP972-${number}`;
-            }
-            
-            function generateUserCount() {
-                return Math.floor(1000 + Math.random() * 9000);
-            }
+        const clientName = document.getElementById('intakeClientName').value.trim();
+        const phoneNumber = document.getElementById('intakePhoneNumber').value.trim();
+        const equipment = document.getElementById('intakeEquipment').value.trim();
+        const brand = document.getElementById('intakeBrand').value.trim();
+        const problem = document.getElementById('intakeProblem').value.trim();
+        const photoFile = intakePhoto.files[0];
+        const signatureData = signaturePad.isEmpty() ? null : signaturePad.toDataURL('image/png');
 
-            // Données pour les problèmes Windows (inchangées)
-            const windowsProblems = {
-                'no-power': {
-                    title: 'L\'ordinateur ne s\'allume pas (Windows)',
-                    steps: [
-                        'Vérifiez que le câble d\'alimentation est bien branché.',
-                        'Essayez une autre prise de courant.',
-                        'Sur les portables, débranchez la batterie et essayez d\'allumer avec le chargeur seul.',
-                        'Sur un ordinateur de bureau, vérifiez l\'interrupteur derrière le boîtier.'
-                    ]
-                },
-                'password-forgotten': {
-                    title: 'Mot de passe oublié (Windows)',
-                    steps: [
-                        'Essayez l\'option "J\'ai oublié mon mot de passe" sur l\'écran de connexion.',
-                        'Si vous avez un compte Microsoft, réinitialisez votre mot de passe en ligne sur account.live.com.',
-                        'Si cela ne fonctionne pas, vous devrez peut-être utiliser une clé de réinitialisation ou réinstaller le système.'
-                    ]
-                },
-                'battery-not-charging': {
-                    title: 'La batterie ne charge pas (Windows)',
-                    steps: [
-                        'Assurez-vous que le chargeur est bien branché. Essayez une autre prise.',
-                        'Redémarrez l\'ordinateur. Parfois, un bug logiciel est la cause.',
-                        'Vérifiez l\'état des pilotes de batterie dans le "Gestionnaire de périphériques" (touche Windows + X).',
-                        'Si possible, essayez d\'utiliser un autre chargeur.'
-                    ]
-                },
-                'dark-screen': {
-                    title: 'L\'écran est sombre (Windows)',
-                    steps: [
-                        'Appuyez sur les touches de fonction de luminosité (souvent avec un symbole de soleil).',
-                        'Essayez la combinaison de touches **Windows + Ctrl + Shift + B** pour redémarrer les pilotes graphiques.',
-                        'Si l\'écran reste noir, il peut y avoir un problème avec votre moniteur ou votre carte graphique.',
-                    ]
-                },
-                'slow-computer': {
-                    title: 'Mon ordinateur est lent (Windows)',
-                    steps: [
-                        'Redémarrez l\'ordinateur.',
-                        'Fermez les applications inutiles (touche **Ctrl + Shift + Esc** pour ouvrir le Gestionnaire des tâches).',
-                        'Libérez de l\'espace disque en supprimant des fichiers volumineux.',
-                        'Faites un scan antivirus complet de votre système.',
-                    ]
-                },
-                'wifi-down': {
-                    title: 'Le Wi-Fi ne se connecte pas (Windows)',
-                    steps: [
-                        'Redémarrez votre box internet.',
-                        'Sur votre PC, éteignez et rallumez le Wi-Fi dans les paramètres ou avec la touche de fonction.',
-                        'Essayez la combinaison de touches **Windows + R** puis tapez "ncpa.cpl" pour vérifier la carte réseau.',
-                        'Vérifiez que le mot de passe Wi-Fi est correct.'
-                    ]
-                },
-                'input-device-fail': {
-                    title: 'La souris ou le clavier ne fonctionne pas (Windows)',
-                    steps: [
-                        'Si l\'appareil est sans fil, vérifiez les piles ou la batterie.',
-                        'Essayez de le brancher sur un autre port USB.',
-                        'Redémarrez votre ordinateur. Cela peut résoudre les conflits de pilotes.',
-                        'Pour le clavier d\'un ordinateur portable, vérifiez si des débris bloquent les touches.',
-                    ]
-                },
-                'other-problem': {
-                    title: 'Assistance personnalisée (Windows)',
-                    steps: []
-                }
-            };
-            
-            // Données pour les problèmes Apple (inchangées)
-            const macProblems = {
-                'no-power': {
-                    title: 'Le Mac ne s\'allume pas (Apple)',
-                    steps: [
-                        'Vérifiez que le chargeur est bien branché et fonctionne.',
-                        'Essayez de réinitialiser le contrôleur de gestion du système (SMC). Sur un MacBook, débranchez tout, puis maintenez **Shift + Control + Option + Power** pendant 10 secondes.',
-                        'Si cela ne fonctionne pas, il peut s\'agir d\'un problème matériel.'
-                    ]
-                },
-                'password-forgotten': {
-                    title: 'Mot de passe oublié (Apple)',
-                    steps: [
-                        'Sur l\'écran de connexion, cliquez sur le "?" à côté du champ de mot de passe.',
-                        'Si vous avez un compte iCloud, utilisez-le pour réinitialiser le mot de passe.',
-                        'Redémarrez votre Mac en maintenant les touches **Command + R** pour accéder au menu de récupération de macOS et utiliser l\'utilitaire de réinitialisation de mot de passe.'
-                    ]
-                },
-                'battery-not-charging': {
-                    title: 'La batterie ne charge pas (Apple)',
-                    steps: [
-                        'Vérifiez que le chargeur est bien branché et n\'est pas endommagé.',
-                        'Réinitialisez le contrôleur de gestion du système (SMC). Sur un Mac de bureau, éteignez le Mac, débranchez le cordon d\'alimentation, attendez 15 secondes, puis rebranchez.',
-                        'Vérifiez l\'état de la batterie dans "Préférences Système" > "Batterie".'
-                    ]
-                },
-                'dark-screen': {
-                    title: 'L\'écran est sombre (Apple)',
-                    steps: [
-                        'Appuyez sur les touches de luminosité du clavier.',
-                        'Redémarrez votre Mac. Si l\'écran reste noir, essayez de réinitialiser la NVRAM ou la PRAM en redémarrant et en maintenant les touches **Option + Command + P + R** pendant 20 secondes.',
-                        'Si vous avez un écran externe, essayez de le brancher pour voir si le problème vient de l\'écran interne.'
-                    ]
-                },
-                'slow-computer': {
-                    title: 'Mon Mac est lent (Apple)',
-                    steps: [
-                        'Redémarrez votre Mac. C\'est souvent suffisant.',
-                        'Fermez les applications non utilisées.',
-                        'Vérifiez l\'espace disque disponible. Il est recommandé d\'avoir au moins 10% d\'espace libre.',
-                        'Utilisez le "Moniteur d\'activité" (dans les Applications > Utilitaires) pour identifier les applications qui consomment le plus de ressources.'
-                    ]
-                },
-                'wifi-down': {
-                    title: 'Le Wi-Fi ne se connecte pas (Apple)',
-                    steps: [
-                        'Redémarrez votre box internet.',
-                        'Sur votre Mac, éteignez et rallumez le Wi-Fi dans le menu de la barre des tâches.',
-                        'Dans les "Préférences Système" > "Réseau", supprimez votre réseau Wi-Fi puis reconnectez-vous.',
-                        'Vérifiez que le mot de passe est correct.'
-                    ]
-                },
-                'input-device-fail': {
-                    title: 'La souris ou le clavier ne fonctionne pas (Apple)',
-                    steps: [
-                        'Si l\'appareil est sans fil, vérifiez le niveau de la batterie ou les piles.',
-                        'Si c\'est un appareil USB, essayez de le brancher sur un autre port.',
-                        'Redémarrez votre Mac. Cela peut résoudre les conflits logiciels.',
-                        'Essayez la combinaison de touches **Command + Option + P + R** au redémarrage pour réinitialiser la PRAM/NVRAM.'
-                    ]
-                },
-                'other-problem': {
-                    title: 'Assistance personnalisée (Apple)',
-                    steps: []
-                }
-            };
-
-            let currentProblems = {};
-
-            function showOSSelection() {
-                const userCount = generateUserCount();
-                appContainer.innerHTML = `
-                    <div class="flex items-center justify-center mb-4">
-                        <img src="logo.png.png" alt="TECHPRECISION972 Logo" class="w-23 h-23 mb-2">
-                    </div>
-                    <h2 class="text-2xl font-bold text-gray-700 mb-2">TECHPRECISION972</h2>
-                    <h1 class="text-4xl font-bold text-gray-800 mb-2">Quel système utilisez-vous ?</h1>
-                    <p class="text-gray-600 mb-8">
-                        Sélectionnez la marque de votre appareil pour obtenir des conseils sur mesure.
-                    </p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div data-os="windows" class="card-hover cursor-pointer p-8 bg-blue-100 rounded-2xl shadow-md transition-all duration-300 transform">
-                            <div class="text-6xl mb-4">🪟</div>
-                            <h3 class="text-xl font-bold text-blue-800">Ordinateur Windows</h3>
-                        </div>
-                        <div data-os="mac" class="card-hover cursor-pointer p-8 bg-gray-100 rounded-2xl shadow-md transition-all duration-300 transform">
-                            <div class="text-6xl mb-4">🍏</div>
-                            <h3 class="text-xl font-bold text-gray-800">Ordinateur Mac</h3>
-                        </div>
-                    </div>
-                    <p class="text-sm text-gray-400 mt-6">
-                        Vous êtes la **${userCount}**e personne à utiliser l'utilitaire.
-                    </p>
-                `;
-            }
-
-            function showProblemList(os) {
-                if (os === 'windows') {
-                    currentProblems = windowsProblems;
-                } else if (os === 'mac') {
-                    currentProblems = macProblems;
-                }
-
-                let cardsHtml = '';
-                for (const key in currentProblems) {
-                    if (currentProblems.hasOwnProperty(key)) {
-                        const problem = currentProblems[key];
-                        const icon = {
-                            'no-power': '💻',
-                            'password-forgotten': '🔑',
-                            'battery-not-charging': '🔋',
-                            'dark-screen': '💡',
-                            'slow-computer': '🐌',
-                            'wifi-down': '📶',
-                            'input-device-fail': '🖱️',
-                            'other-problem': '🤷'
-                        }[key];
-                        const bgColor = {
-                            'no-power': 'bg-purple-100',
-                            'password-forgotten': 'bg-blue-100',
-                            'battery-not-charging': 'bg-green-100',
-                            'dark-screen': 'bg-yellow-100',
-                            'slow-computer': 'bg-red-100',
-                            'wifi-down': 'bg-orange-100',
-                            'input-device-fail': 'bg-pink-100',
-                            'other-problem': 'bg-gray-200'
-                        }[key];
-                        const textColor = {
-                            'no-power': 'text-purple-800',
-                            'password-forgotten': 'text-blue-800',
-                            'battery-not-charging': 'text-green-800',
-                            'dark-screen': 'text-yellow-800',
-                            'slow-computer': 'text-red-800',
-                            'wifi-down': 'text-orange-800',
-                            'input-device-fail': 'text-pink-800',
-                            'other-problem': 'text-gray-800'
-                        }[key];
-
-                        cardsHtml += `
-                            <div data-problem="${key}" class="card-hover cursor-pointer p-6 ${bgColor} rounded-2xl shadow-md transition-all duration-300 transform">
-                                <div class="text-3xl mb-2">${icon}</div>
-                                <h3 class="text-lg font-semibold ${textColor}">${problem.title}</h3>
-                            </div>
-                        `;
-                    }
-                }
-
-                appContainer.innerHTML = `
-                    <div class="flex items-center justify-between mb-4">
-                        <button id="back-to-os" class="bg-gray-200 text-gray-800 px-4 py-2 rounded-full font-semibold hover:bg-gray-300 transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 inline-block mr-1">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-                            </svg>
-                            Retour
-                        </button>
-                    </div>
-                    <div class="flex items-center justify-center mb-4">
-                            <img src="logo.png.png" alt="TECHPRECISION972 Logo" class="w-25 h-25 mb-2">
-                    </div>
-                    <h2 class="text-2xl font-bold text-gray-700 mb-2">TECHPRECISION972</h2>
-                    <h1 class="text-4xl font-bold text-gray-800 mb-2">Quel soucis rencontrez-vous ?</h1>
-                    <p class="text-gray-600 mb-8">
-                        Sélectionnez votre problème pour obtenir des étapes de dépannage simples et rapides.
-                    </p>
-                    <div id="problems-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                        ${cardsHtml}
-                    </div>
-                `;
-
-                document.getElementById('problems-container').addEventListener('click', handleProblemClick);
-                document.getElementById('back-to-os').addEventListener('click', showOSSelection);
-            }
-
-            function handleProblemClick(event) {
-                let card = event.target.closest('[data-problem]');
-                if (card) {
-                    const problemKey = card.dataset.problem;
-                    const problemData = currentProblems[problemKey];
-                    ticketNumber = generateTicketNumber(); 
-
-                    if (problemData) {
-                        let contentHTML = `
-                            <div class="text-left mb-6 p-4 bg-gray-100 rounded-xl">
-                                <p class="text-sm font-semibold text-gray-500">Votre numéro de ticket :</p>
-                                <div class="flex items-center justify-between">
-                                    <p id="ticket-number-display" class="text-3xl font-bold text-gray-800">${ticketNumber}</p>
-                                    <button id="copy-ticket" class="text-gray-400 hover:text-gray-600 transition-colors">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v-.938c0-.621-.52-1.125-1.164-1.125h-5.316a1.125 1.125 0 01-1.164-1.125v-1.077a.896.896 0 00-.896-.896h-1.077a1.125 1.125 0 01-1.125-1.125V9.071m9.67-4.485c.622 0 1.126.504 1.126 1.126V15.54L17.75 17.25h-.938m-7.25-2.25H9.071c-.622 0-1.126.504-1.126 1.126v1.492m9.67-4.485V6.75h-2.164a1.125 1.125 0 01-1.164-1.125V4.5m-5.316-2.25v-1.077a.896.896 0 00-.896-.896h-1.077A1.125 1.125 0 014.5 4.071v2.164" />
-                                        </svg>
-                                    </button>
-                                </div>
-                                <p class="text-sm text-gray-600 mt-2">
-                                    Veuillez noter ce numéro ou le copier pour un suivi plus rapide.
-                                </p>
-                            </div>
-                            <h2 class="text-2xl font-bold mb-4 text-gray-800">${problemData.title}</h2>
-                        `;
-                        
-                        if (problemData.steps.length > 0) {
-                            contentHTML += '<ul class="list-disc list-inside space-y-2 text-left text-gray-700">';
-                            problemData.steps.forEach(step => {
-                                contentHTML += `<li>${step}</li>`;
-                            });
-                            contentHTML += '</ul>';
-                        }
-                        
-                        const prefilledWhatsappText = `Bonjour, je vous contacte suite à un problème informatique. Mon numéro de ticket est : ${ticketNumber}.`;
-                        const cleanedWhatsappNumber = cleanPhoneNumberForWhatsapp(rawPhoneNumber); 
-                        const prefilledWhatsappLink = `https://wa.me/${cleanedWhatsappNumber}?text=${encodeURIComponent(prefilledWhatsappText)}`; // Utilisez le ? ici
-
-                        const googleFormsFinalLink = `${googleFormsLink}`;
-
-                        // AJOUT DE CONSOLE.LOG POUR DEBUG
-                        console.log("--- DEBUG WHATSAPP LINK ---");
-                        console.log("rawPhoneNumber:", rawPhoneNumber);
-                        console.log("cleanedWhatsappNumber:", cleanedWhatsappNumber);
-                        console.log("prefilledWhatsappText:", prefilledWhatsappText);
-                        console.log("prefilledWhatsappLink FINAL:", prefilledWhatsappLink);
-                        console.log("-------------------------");
-
-
-                        contentHTML += `
-                            <p class="mt-8 text-lg font-semibold text-gray-800">
-                                Le problème persiste ? Ne vous inquiétez pas !
-                            </p>
-                            <p class="text-sm text-gray-600 mb-4">
-                                Remplissez notre formulaire, contactez-nous via WhatsApp ou appelez-nous directement pour une assistance personnalisée.
-                            </p>
-                            <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4 mt-6">
-                                <a href="${googleFormsFinalLink}" target="_blank" class="contact-link bg-purple-600 text-white hover:bg-purple-700">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM5 7a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zM5 11a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zM9 15a1 1 0 011-1h4a1 1 0 110 2h-4a1 1 0 01-1-1z" />
-                                    </svg>
-                                    Formulaire
-                                </a>
-                                <a href="${prefilledWhatsappLink}" target="_blank" class="contact-link bg-green-500 text-white hover:bg-green-600">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-2.094 17.519c-.482-.093-2.883-1.189-3.292-1.336-.263-.09-.504-.148-.716.326-.201.442-.647 1.76-1.025 1.904-.325.127-.638.257-.962.22-.32-.036-.707-.15-.707-.492 0-.274.341-.409 1.144-1.294 1.157-1.123 2.502-2.527 2.657-2.735.155-.208.05-.333-.102-.478-.155-.144-.338-.285-.504-.424-.16-.134-.33-.314-.24-.515.09-.2.686-1.638.966-2.316.28-.679.564-.61.849-.61s.579-.047.884-.047c.299 0 .385.127.487.359.102.232.355.859.458 1.071.102.212.172.247.319.46.147.213.916 1.503.916 1.836 0 .333-.357.519-.357.519-.395.201-.637.31-.914.457-.277.146-.615.421-.357.734.258.312.984 1.439 1.258 1.636.273.197.358.319.461.431.103.111.106.182.072.348-.035.166-.46.862-.573 1.092-.112.23-.223.359-.446.471-.223.112-.497.165-.91.077z"/>
-                            </svg>
-                            WhatsApp
-                        </a>
-                        <a href="tel:${phoneNumber}" class="contact-link bg-slate-600 text-white hover:bg-slate-700">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M16.996 14.869c-.838-.052-.102-.782-.479-.933-.49-.193-.727-.221-1.229-.221-1.079 0-1.896-.549-2.617-1.272-.72-1.23-1.282-2.639-1.282-3.834 0-.498.028-.739.221-1.229.15-.377.88-.661.933-.479.839.052.102.782.479.933.49.193.727.221 1.229.221 1.079 0 1.896.549 2.617 1.272.72 1.23 1.282 2.639 1.282 3.834 0 .498-.028-.739-.221 1.229-.15.377-.88.661-.933.479zM12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm2.094 17.519c-.482-.093-2.883-1.189-3.292-1.336-.263-.09-.504-.148-.716.326-.201.442-.647 1.76-1.025 1.904-.325.127-.638.257-.962.22-.32-.036-.707-.15-.707-.492 0-.274.341-.409 1.144-1.294 1.157-1.123 2.502-2.527 2.657-2.735.155-.208.05-.333-.102-.478-.155-.144-.338-.285-.504-.424-.16-.134-.33-.314-.24-.515.09-.2.686-1.638.966-2.316.28-.679.564-.61.849-.61s.579-.047.884-.047c.299 0 .385.127.487.359.102.232.355.859.458 1.071.102.212.172.247.319.46.147.213.916 1.503.916 1.836 0 .333-.357.519-.357.519-.395.201-.637.31-.914.457-.277.146-.615.421-.357.734.258.312.984 1.439 1.258 1.636.273.197.358.319.461.431.103.111.106.182.072.348-.035.166-.46.862-.573 1.092-.112.23-.223.359-.446.471-.223.112-.497.165-.91.077z"/>
-                            </svg>
-                            Appeler
-                        </a>
-                    </div>
-                `;
-
-                modalContent.innerHTML = contentHTML;
-                modal.classList.add('is-active'); 
-                
-                document.getElementById('copy-ticket').addEventListener('click', () => {
-                    const ticketNumberText = document.getElementById('ticket-number-display').textContent;
-                    navigator.clipboard.writeText(ticketNumberText).then(() => {
-                        // Feedback de copie
-                    });
-                });
-            }
+        if (!clientName || !equipment || !problem || signaturePad.isEmpty()) {
+          openCustomAlertModal("Veuillez remplir le nom du client, l'équipement, le problème et la signature.");
+          return;
         }
-    }
 
-    appContainer.addEventListener('click', (event) => {
-        let osCard = event.target.closest('[data-os]');
-        if (osCard) {
-            showProblemList(osCard.dataset.os);
+        // Détection
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+                      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
+        // Pré-ouvrir la fenêtre dans le même geste utilisateur
+        const preOpenedWin = (isIOS || isSafari) ? window.open('about:blank', '_blank') : null;
+
+        // Photo -> JPEG compressé (évite HEIC/HEIF et gros fichiers)
+        let photoDataUrl = null;
+        try {
+          if (photoFile) {
+            photoDataUrl = await fileToCompressedJpegDataUrl(photoFile, 1600, 0.85);
+          }
+        } catch (error) {
+          console.error('Erreur conversion photo:', error);
+          if (preOpenedWin && !preOpenedWin.closed) {
+            preOpenedWin.document.write('<p style="font-family:system-ui">Erreur lors du traitement de la photo (format non supporté).</p>');
+          }
+          openCustomAlertModal('Erreur lors du traitement de la photo (format non supporté). Réessayez avec une image JPEG/PNG.');
+          return;
         }
-    });
 
-    closeModalBtn.addEventListener('click', () => {
-        modal.classList.remove('is-active');
-    });
-    
-    backButton.addEventListener('click', () => {
-        modal.classList.remove('is-active');
-    });
+        const intakeData = { clientName, phoneNumber, equipment, brand, problem, photoDataUrl, signatureData };
 
-    modal.addEventListener('click', (event) => {
-        if (event.target === modal) {
-            modal.classList.remove('is-active');
+        openCustomAlertModal('Génération du PDF…');
+        try {
+          await generateIntakePdf(intakeData, { preOpenedWin });
+          intakeForm.reset();
+          signaturePad.clear();
+          openCustomAlertModal('PDF généré. Il devrait s’ouvrir ou se télécharger selon votre appareil.');
+        } catch (err) {
+          console.error('Erreur PDF:', err);
+          if (preOpenedWin && !preOpenedWin.closed) {
+            preOpenedWin.document.write('<p style="font-family:system-ui">Erreur lors de la génération du PDF.</p>');
+          }
+          openCustomAlertModal('Une erreur est survenue lors de la génération du PDF. Réessayez.');
         }
-    });
+      });
 
-    showOSSelection();
-});
-    </script>
+      // Génération PDF
+      async function generateIntakePdf(data, { preOpenedWin = null } = {}) {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+
+        // --- Header avec logo (optionnel) ---
+        let logoImgEl = null;
+        try {
+          logoImgEl = await loadImage('logo.png'); // chemin corrigé
+        } catch (_) {
+          logoImgEl = null; // continue sans logo
+        }
+        const pageWidth = doc.internal.pageSize.getWidth();
+
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(22);
+        doc.text('Prise en charge matériel', pageWidth / 2, 20, { align: 'center' });
+
+        if (logoImgEl) {
+          const logoWidth = 20;
+          const logoHeight = (logoImgEl.height * logoWidth) / logoImgEl.width;
+          doc.addImage(logoImgEl, 'PNG', 10, 12, logoWidth, logoHeight);
+        }
+
+        doc.setFontSize(10);
+        doc.text(`Tech Precision - Rapport du ${new Date().toLocaleDateString('fr-FR')}`, pageWidth / 2, 30, { align: 'center' });
+        doc.line(10, 35, 200, 35);
+
+        // --- Corps ---
+        let y = 45;
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'normal');
+        doc.text(`Nom du client: ${data.clientName}`, 10, y);
+        doc.text(`Téléphone: ${data.phoneNumber || 'N/A'}`, 10, (y += 7));
+        doc.text(`Équipement: ${data.equipment}`, 10, (y += 7));
+        doc.text(`Marque: ${data.brand || 'N/A'}`, 10, (y += 7));
+        doc.text(`Problème:`, 10, (y += 7));
+        const problemLines = doc.splitTextToSize(data.problem || 'N/A', 180);
+        doc.text(problemLines, 10, (y += 5));
+        y += problemLines.length * 5;
+        y = Math.max(y, 100);
+
+        // --- Photo ---
+        const photoFrameWidth = 85;
+        const photoFrameHeight = 60;
+        doc.setFont('helvetica', 'bold');
+        doc.text("Photo de l'équipement:", 10, (y += 10));
+        doc.setFont('helvetica', 'normal');
+        doc.rect(10, y + 5, photoFrameWidth, photoFrameHeight, 'S');
+
+        if (data.photoDataUrl) {
+          try {
+            // Charger pour dimensions
+            const imgEl = await loadImage(data.photoDataUrl);
+            const imgRatio = imgEl.width / imgEl.height;
+            const frameRatio = photoFrameWidth / photoFrameHeight;
+            let finalW, finalH;
+            if (imgRatio > frameRatio) {
+              finalW = photoFrameWidth;
+              finalH = photoFrameWidth / imgRatio;
+            } else {
+              finalH = photoFrameHeight;
+              finalW = photoFrameHeight * imgRatio;
+            }
+            const imgX = 10 + (photoFrameWidth - finalW) / 2;
+            const imgY = y + 5 + (photoFrameHeight - finalH) / 2;
+
+            // Photo convertie en JPEG -> format garanti
+            doc.addImage(data.photoDataUrl, 'JPEG', imgX, imgY, finalW, finalH);
+          } catch (e) {
+            doc.text('Erreur photo', 10 + photoFrameWidth / 2, y + 5 + photoFrameHeight / 2, { align: 'center' });
+          }
+        } else {
+          doc.text('Pas de photo', 10 + photoFrameWidth / 2, y + 5 + photoFrameHeight / 2, { align: 'center' });
+        }
+
+        y += photoFrameHeight + 20;
+
+        // --- Signature ---
+        doc.setFont('helvetica', 'bold');
+        doc.text('Signature du client:', 10, y);
+        doc.setFont('helvetica', 'normal');
+
+        const sigWidth = 80;
+        const sigHeight = 30;
+        if (y + 5 + sigHeight > 280) {
+          doc.addPage();
+          y = 20;
+        }
+        doc.rect(10, y + 5, sigWidth, sigHeight, 'S');
+
+        if (data.signatureData) {
+          const sigFmt = getImageFormatFromDataUrl(data.signatureData); // normalement PNG
+          doc.addImage(data.signatureData, sigFmt, 10, y + 5, sigWidth, sigHeight);
+        } else {
+          doc.text('Pas de signature fournie.', 10, y + 5);
+        }
+
+        // --- Sortie PDF (compat iOS/Android) ---
+        const filename = `Prise_en_charge_${data.clientName.replace(/\s+/g, '_')}.pdf`;
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+                      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
+        if (isIOS || isSafari) {
+          const blob = doc.output('blob');
+          const url = URL.createObjectURL(blob);
+
+          if (preOpenedWin && !preOpenedWin.closed) {
+            preOpenedWin.location.href = url; // même geste utilisateur → pas bloqué
+          } else {
+            // Fallback si la pré-ouverture a été bloquée
+            const win = window.open(url, '_blank');
+            if (!win) {
+              const a = document.createElement('a');
+              a.href = url;
+              a.target = '_blank';
+              a.rel = 'noopener';
+              a.click();
+            }
+          }
+        } else {
+          // Android/desktop → téléchargement classique
+          doc.save(filename);
+        }
+      }
+    });
+  </script>
 </body>
 </html>
