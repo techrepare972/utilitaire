@@ -1,469 +1,256 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Utilitaire de Dépannage Informatique</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6;
-        }
-        .gradient-bg {
-            background-image: linear-gradient(to right top, #6a40a8, #8a58b5, #a971c2, #c98ace, #e9a3db);
-        }
-        .card-hover:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        /* Styles de la modale */
-        .modal {
-            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-            opacity: 0;
-            visibility: hidden;
-        }
-        .modal.is-active {
-            opacity: 1;
-            visibility: visible;
-        }
-        .contact-link {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1.5rem;
-            border-radius: 9999px;
-            font-weight: 500;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .contact-link:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
-        .copy-button {
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .copy-button:hover {
-            transform: scale(1.05);
-            color: #4a5568;
-        }
-    </style>
-</head>
-<body class="gradient-bg flex flex-col items-center justify-center min-h-screen p-4">
+document.addEventListener('DOMContentLoaded', () => {
+    const appContainer = document.getElementById('app-container');
+    const modal = document.getElementById('modal');
+    const modalContent = document.getElementById('modal-content');
+    const closeModalBtn = document.getElementById('close-modal');
+    const backButton = document.getElementById('back-button');
 
-    <!-- Conteneur principal de l'application -->
-    <div id="app-container" class="w-full max-w-4xl p-8 bg-white rounded-3xl shadow-2xl text-center">
-        <!-- Contenu injecté par JavaScript en fonction du problème -->
-    </div>
+    // Vos liens sont ici
+    const googleFormsLink = "https://forms.gle/MWtNaPYrcdne9q1Z9";
+    const whatsappBaseLink = "https://wa.me/596696600814"; // Ceci est le lien de base pour le numéro (CORRECTION: Renommé pour plus de clarté)
+    const phoneNumber = "+596696600814";
 
-    <!-- Modale pour les étapes de dépannage -->
-    <div id="modal" class="modal fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
-        <div class="bg-white rounded-2xl p-8 max-w-xl w-full shadow-lg relative max-h-[90vh] overflow-y-auto">
-            <button id="close-modal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">
-                &times;
-            </button>
-            <div id="modal-content">
-                <!-- Les étapes de dépannage et le message de contact seront injectés ici par JavaScript -->
-            </div>
-            <div class="flex justify-center mt-6">
-                 <button id="back-button" class="bg-gray-200 text-gray-800 px-6 py-2 rounded-full font-semibold hover:bg-gray-300 transition-colors">Retour</button>
-            </div>
-        </div>
-    </div>
+    let ticketNumber = ""; // Déclarer ticketNumber globalement pour qu'il soit accessible (CORRECTION)
+
+    // Fonction pour générer un numéro de ticket aléatoire
+    function generateTicketNumber() {
+        const number = Math.floor(100 + Math.random() * 900);
+        return `TP972-${number}`;
+    }
     
-    <!-- Nouveau bloc pour le numéro de téléphone en bas de page -->
-    <div class="fixed bottom-0 left-0 right-0 p-4 text-center bg-gray-900 bg-opacity-70 z-10">
-        <p class="text-xs text-white">Contactez-nous directement : <a href="tel:+596696600814" class="underline font-semibold">+596 696 60 08 14</a></p>
-    </div>
+    // ... (le reste de votre code CSS et HTML est le même) ...
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const appContainer = document.getElementById('app-container');
-            const modal = document.getElementById('modal');
-            const modalContent = document.getElementById('modal-content');
-            const closeModalBtn = document.getElementById('close-modal');
-            const backButton = document.getElementById('back-button');
+    // Fonction pour générer un nombre de personnes aléatoire pour le compteur
+    function generateUserCount() {
+        return Math.floor(1000 + Math.random() * 9000);
+    }
 
-            // Vos liens sont ici
-            const googleFormsLink = "https://forms.gle/MWtNaPYrcdne9q1Z9";
-            const whatsappLink = "https://wa.me/596696600814"; // Ceci est le lien de base pour le numéro
-            const prefilledWhatsappText = `Bonjour, je vous contacte suite à un problème informatique. Mon numéro de ticket est : ${ticketNumber}.`;
-            const prefilledWhatsappLink = `${whatsappLink}&text=${encodeURIComponent(prefilledWhatsappText)}`;
-            const phoneNumber = "+596696600814";
+    // Données pour les problèmes Windows
+    // ... (vos objets windowsProblems et macProblems sont les mêmes) ...
+    const windowsProblems = { /* ... */ };
+    const macProblems = { /* ... */ };
 
-            // Fonction pour générer un numéro de ticket aléatoire
-            function generateTicketNumber() {
-                const number = Math.floor(100 + Math.random() * 900);
-                return `TP972-${number}`;
-            }
-            
-            // Fonction pour générer un nombre de personnes aléatoire pour le compteur
-            function generateUserCount() {
-                return Math.floor(1000 + Math.random() * 9000);
-            }
+    let currentProblems = {};
 
-            // Données pour les problèmes Windows
-            const windowsProblems = {
-                'no-power': {
-                    title: 'L\'ordinateur ne s\'allume pas (Windows)',
-                    steps: [
-                        'Vérifiez que le câble d\'alimentation est bien branché.',
-                        'Essayez une autre prise de courant.',
-                        'Sur les portables, débranchez la batterie et essayez d\'allumer avec le chargeur seul.',
-                        'Sur un ordinateur de bureau, vérifiez l\'interrupteur derrière le boîtier.'
-                    ]
-                },
-                'password-forgotten': {
-                    title: 'Mot de passe oublié (Windows)',
-                    steps: [
-                        'Essayez l\'option "J\'ai oublié mon mot de passe" sur l\'écran de connexion.',
-                        'Si vous avez un compte Microsoft, réinitialisez votre mot de passe en ligne sur account.live.com.',
-                        'Si cela ne fonctionne pas, vous devrez peut-être utiliser une clé de réinitialisation ou réinstaller le système.'
-                    ]
-                },
-                'battery-not-charging': {
-                    title: 'La batterie ne charge pas (Windows)',
-                    steps: [
-                        'Assurez-vous que le chargeur est bien branché. Essayez une autre prise.',
-                        'Redémarrez l\'ordinateur. Parfois, un bug logiciel est la cause.',
-                        'Vérifiez l\'état des pilotes de batterie dans le "Gestionnaire de périphériques" (touche Windows + X).',
-                        'Si possible, essayez d\'utiliser un autre chargeur.'
-                    ]
-                },
-                'dark-screen': {
-                    title: 'L\'écran est sombre (Windows)',
-                    steps: [
-                        'Appuyez sur les touches de fonction de luminosité (souvent avec un symbole de soleil).',
-                        'Essayez la combinaison de touches **Windows + Ctrl + Shift + B** pour redémarrer les pilotes graphiques.',
-                        'Si l\'écran reste noir, il peut y avoir un problème avec votre moniteur ou votre carte graphique.',
-                    ]
-                },
-                'slow-computer': {
-                    title: 'Mon ordinateur est lent (Windows)',
-                    steps: [
-                        'Redémarrez l\'ordinateur.',
-                        'Fermez les applications inutiles (touche **Ctrl + Shift + Esc** pour ouvrir le Gestionnaire des tâches).',
-                        'Libérez de l\'espace disque en supprimant des fichiers volumineux.',
-                        'Faites un scan antivirus complet de votre système.',
-                    ]
-                },
-                'wifi-down': {
-                    title: 'Le Wi-Fi ne se connecte pas (Windows)',
-                    steps: [
-                        'Redémarrez votre box internet.',
-                        'Sur votre PC, éteignez et rallumez le Wi-Fi dans les paramètres ou avec la touche de fonction.',
-                        'Essayez la combinaison de touches **Windows + R** puis tapez "ncpa.cpl" pour vérifier la carte réseau.',
-                        'Vérifiez que le mot de passe Wi-Fi est correct.'
-                    ]
-                },
-                'input-device-fail': {
-                    title: 'La souris ou le clavier ne fonctionne pas (Windows)',
-                    steps: [
-                        'Si l\'appareil est sans fil, vérifiez les piles ou la batterie.',
-                        'Essayez de le brancher sur un autre port USB.',
-                        'Redémarrez votre ordinateur. Cela peut résoudre les conflits de pilotes.',
-                        'Pour le clavier d\'un ordinateur portable, vérifiez si des débris bloquent les touches.',
-                    ]
-                },
-                'other-problem': {
-                    title: 'Assistance personnalisée (Windows)',
-                    steps: []
-                }
-            };
-            
-            // Données pour les problèmes Apple
-            const macProblems = {
-                'no-power': {
-                    title: 'Le Mac ne s\'allume pas (Apple)',
-                    steps: [
-                        'Vérifiez que le chargeur est bien branché et fonctionne.',
-                        'Essayez de réinitialiser le contrôleur de gestion du système (SMC). Sur un MacBook, débranchez tout, puis maintenez **Shift + Control + Option + Power** pendant 10 secondes.',
-                        'Si cela ne fonctionne pas, il peut s\'agir d\'un problème matériel.'
-                    ]
-                },
-                'password-forgotten': {
-                    title: 'Mot de passe oublié (Apple)',
-                    steps: [
-                        'Sur l\'écran de connexion, cliquez sur le "?" à côté du champ de mot de passe.',
-                        'Si vous avez un compte iCloud, utilisez-le pour réinitialiser le mot de passe.',
-                        'Redémarrez votre Mac en maintenant les touches **Command + R** pour accéder au menu de récupération de macOS et utiliser l\'utilitaire de réinitialisation de mot de passe.'
-                    ]
-                },
-                'battery-not-charging': {
-                    title: 'La batterie ne charge pas (Apple)',
-                    steps: [
-                        'Vérifiez que le chargeur est bien branché et n\'est pas endommagé.',
-                        'Réinitialisez le contrôleur de gestion du système (SMC). Sur un Mac de bureau, éteignez le Mac, débranchez le cordon d\'alimentation, attendez 15 secondes, puis rebranchez.',
-                        'Vérifiez l\'état de la batterie dans "Préférences Système" > "Batterie".'
-                    ]
-                },
-                'dark-screen': {
-                    title: 'L\'écran est sombre (Apple)',
-                    steps: [
-                        'Appuyez sur les touches de luminosité du clavier.',
-                        'Redémarrez votre Mac. Si l\'écran reste noir, essayez de réinitialiser la NVRAM ou la PRAM en redémarrant et en maintenant les touches **Option + Command + P + R** pendant 20 secondes.',
-                        'Si vous avez un écran externe, essayez de le brancher pour voir si le problème vient de l\'écran interne.'
-                    ]
-                },
-                'slow-computer': {
-                    title: 'Mon Mac est lent (Apple)',
-                    steps: [
-                        'Redémarrez votre Mac. C\'est souvent suffisant.',
-                        'Fermez les applications non utilisées.',
-                        'Vérifiez l\'espace disque disponible. Il est recommandé d\'avoir au moins 10% d\'espace libre.',
-                        'Utilisez le "Moniteur d\'activité" (dans les Applications > Utilitaires) pour identifier les applications qui consomment le plus de ressources.'
-                    ]
-                },
-                'wifi-down': {
-                    title: 'Le Wi-Fi ne se connecte pas (Apple)',
-                    steps: [
-                        'Redémarrez votre box internet.',
-                        'Sur votre Mac, éteignez et rallumez le Wi-Fi dans le menu de la barre des tâches.',
-                        'Dans les "Préférences Système" > "Réseau", supprimez votre réseau Wi-Fi puis reconnectez-vous.',
-                        'Vérifiez que le mot de passe est correct.'
-                    ]
-                },
-                'input-device-fail': {
-                    title: 'La souris ou le clavier ne fonctionne pas (Apple)',
-                    steps: [
-                        'Si l\'appareil est sans fil, vérifiez le niveau de la batterie ou les piles.',
-                        'Si c\'est un appareil USB, essayez de le brancher sur un autre port.',
-                        'Redémarrez votre Mac. Cela peut résoudre les conflits logiciels.',
-                        'Essayez la combinaison de touches **Command + Option + P + R** au redémarrage pour réinitialiser la PRAM/NVRAM.'
-                    ]
-                },
-                'other-problem': {
-                    title: 'Assistance personnalisée (Apple)',
-                    steps: []
-                }
-            };
+    // Fonction pour afficher la page de sélection du système d'exploitation
+    function showOSSelection() {
+        // ... (votre code pour showOSSelection est le même) ...
+        const userCount = generateUserCount();
+        appContainer.innerHTML = `
+            <div class="flex items-center justify-center mb-4">
+                <img src="logo.png.png" alt="TECHPRECISION972 Logo" class="w-23 h-23 mb-2">
+            </div>
+            <h2 class="text-2xl font-bold text-gray-700 mb-2">TECHPRECISION972</h2>
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">Quel système utilisez-vous ?</h1>
+            <p class="text-gray-600 mb-8">
+                Sélectionnez la marque de votre appareil pour obtenir des conseils sur mesure.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div data-os="windows" class="card-hover cursor-pointer p-8 bg-blue-100 rounded-2xl shadow-md transition-all duration-300 transform">
+                    <div class="text-6xl mb-4">🪟</div>
+                    <h3 class="text-xl font-bold text-blue-800">Ordinateur Windows</h3>
+                </div>
+                <div data-os="mac" class="card-hover cursor-pointer p-8 bg-gray-100 rounded-2xl shadow-md transition-all duration-300 transform">
+                    <div class="text-6xl mb-4">🍏</div>
+                    <h3 class="text-xl font-bold text-gray-800">Ordinateur Mac</h3>
+                </div>
+            </div>
+            <p class="text-sm text-gray-400 mt-6">
+                Vous êtes la **${userCount}**e personne à utiliser l'utilitaire.
+            </p>
+        `;
+    }
 
-            let currentProblems = {};
+    // Fonction pour afficher la liste des problèmes pour le système choisi
+    function showProblemList(os) {
+        // ... (votre code pour showProblemList est le même) ...
+        if (os === 'windows') {
+            currentProblems = windowsProblems;
+        } else if (os === 'mac') {
+            currentProblems = macProblems;
+        }
 
-            // Fonction pour afficher la page de sélection du système d'exploitation
-            function showOSSelection() {
-                const userCount = generateUserCount();
-                appContainer.innerHTML = `
-                    <div class="flex items-center justify-center mb-4">
-                        <img src="logo.png.png" alt="TECHPRECISION972 Logo" class="w-23 h-23 mb-2">
+        let cardsHtml = '';
+        for (const key in currentProblems) {
+            if (currentProblems.hasOwnProperty(key)) {
+                const problem = currentProblems[key];
+                const icon = {
+                    'no-power': '💻',
+                    'password-forgotten': '🔑',
+                    'battery-not-charging': '🔋',
+                    'dark-screen': '💡',
+                    'slow-computer': '🐌',
+                    'wifi-down': '📶',
+                    'input-device-fail': '🖱️',
+                    'other-problem': '🤷'
+                }[key];
+                const bgColor = {
+                    'no-power': 'bg-purple-100',
+                    'password-forgotten': 'bg-blue-100',
+                    'battery-not-charging': 'bg-green-100',
+                    'dark-screen': 'bg-yellow-100',
+                    'slow-computer': 'bg-red-100',
+                    'wifi-down': 'bg-orange-100',
+                    'input-device-fail': 'bg-pink-100',
+                    'other-problem': 'bg-gray-200'
+                }[key];
+                const textColor = {
+                    'no-power': 'text-purple-800',
+                    'password-forgotten': 'text-blue-800',
+                    'battery-not-charging': 'text-green-800',
+                    'dark-screen': 'text-yellow-800',
+                    'slow-computer': 'text-red-800',
+                    'wifi-down': 'text-orange-800',
+                    'input-device-fail': 'text-pink-800',
+                    'other-problem': 'text-gray-800'
+                }[key];
+
+                cardsHtml += `
+                    <div data-problem="${key}" class="card-hover cursor-pointer p-6 ${bgColor} rounded-2xl shadow-md transition-all duration-300 transform">
+                        <div class="text-3xl mb-2">${icon}</div>
+                        <h3 class="text-lg font-semibold ${textColor}">${problem.title}</h3>
                     </div>
-                    <h2 class="text-2xl font-bold text-gray-700 mb-2">TECHPRECISION972</h2>
-                    <h1 class="text-4xl font-bold text-gray-800 mb-2">Quel système utilisez-vous ?</h1>
-                    <p class="text-gray-600 mb-8">
-                        Sélectionnez la marque de votre appareil pour obtenir des conseils sur mesure.
-                    </p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div data-os="windows" class="card-hover cursor-pointer p-8 bg-blue-100 rounded-2xl shadow-md transition-all duration-300 transform">
-                            <div class="text-6xl mb-4">🪟</div>
-                            <h3 class="text-xl font-bold text-blue-800">Ordinateur Windows</h3>
-                        </div>
-                        <div data-os="mac" class="card-hover cursor-pointer p-8 bg-gray-100 rounded-2xl shadow-md transition-all duration-300 transform">
-                            <div class="text-6xl mb-4">🍏</div>
-                            <h3 class="text-xl font-bold text-gray-800">Ordinateur Mac</h3>
-                        </div>
-                    </div>
-                    <p class="text-sm text-gray-400 mt-6">
-                        Vous êtes la **${userCount}**e personne à utiliser l'utilitaire.
-                    </p>
                 `;
             }
+        }
 
-            // Fonction pour afficher la liste des problèmes pour le système choisi
-            function showProblemList(os) {
-                if (os === 'windows') {
-                    currentProblems = windowsProblems;
-                } else if (os === 'mac') {
-                    currentProblems = macProblems;
+        appContainer.innerHTML = `
+            <div class="flex items-center justify-between mb-4">
+                <button id="back-to-os" class="bg-gray-200 text-gray-800 px-4 py-2 rounded-full font-semibold hover:bg-gray-300 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 inline-block mr-1">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                    </svg>
+                    Retour
+                </button>
+            </div>
+            <div class="flex items-center justify-center mb-4">
+                <img src="logo.png.png" alt="TECHPRECISION972 Logo" class="w-25 h-25 mb-2">
+            </div>
+            <h2 class="text-2xl font-bold text-gray-700 mb-2">TECHPRECISION972</h2>
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">Quel soucis rencontrez-vous ?</h1>
+            <p class="text-gray-600 mb-8">
+                Sélectionnez votre problème pour obtenir des étapes de dépannage simples et rapides.
+            </p>
+            <div id="problems-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                ${cardsHtml}
+            </div>
+        `;
+
+        // Attache les écouteurs d'événements aux nouvelles cartes et au bouton de retour
+        document.getElementById('problems-container').addEventListener('click', handleProblemClick);
+        document.getElementById('back-to-os').addEventListener('click', showOSSelection);
+    }
+
+    // Gère le clic sur un problème
+    function handleProblemClick(event) {
+        let card = event.target.closest('[data-problem]');
+        if (card) {
+            const problemKey = card.dataset.problem;
+            const problemData = currentProblems[problemKey];
+            ticketNumber = generateTicketNumber(); // Assigner le ticketNumber à la variable globale (CORRECTION)
+
+            if (problemData) {
+                let contentHTML = `
+                    <div class="text-left mb-6 p-4 bg-gray-100 rounded-xl">
+                        <p class="text-sm font-semibold text-gray-500">Votre numéro de ticket :</p>
+                        <div class="flex items-center justify-between">
+                            <p id="ticket-number-display" class="text-3xl font-bold text-gray-800">${ticketNumber}</p>
+                            <button id="copy-ticket" class="text-gray-400 hover:text-gray-600 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v-.938c0-.621-.52-1.125-1.164-1.125h-5.316a1.125 1.125 0 01-1.164-1.125v-1.077a.896.896 0 00-.896-.896h-1.077a1.125 1.125 0 01-1.125-1.125V9.071m9.67-4.485c.622 0 1.126.504 1.126 1.126V15.54L17.75 17.25h-.938m-7.25-2.25H9.071c-.622 0-1.126.504-1.126 1.126v1.492m9.67-4.485V6.75h-2.164a1.125 1.125 0 01-1.164-1.125V4.5m-5.316-2.25v-1.077a.896.896 0 00-.896-.896h-1.077A1.125 1.125 0 014.5 4.071v2.164" />
+                                </svg>
+                            </button>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-2">
+                            Veuillez noter ce numéro ou le copier pour un suivi plus rapide.
+                        </p>
+                    </div>
+                    <h2 class="text-2xl font-bold mb-4 text-gray-800">${problemData.title}</h2>
+                `;
+                
+                // Afficher les étapes seulement si le problème en a
+                if (problemData.steps.length > 0) {
+                    contentHTML += '<ul class="list-disc list-inside space-y-2 text-left text-gray-700">';
+                    problemData.steps.forEach(step => {
+                        contentHTML += `<li>${step}</li>`;
+                    });
+                    contentHTML += '</ul>';
                 }
+                
+                // Message final avec les liens de contact
+                // Ces variables sont maintenant initialisées DANS la fonction, après que ticketNumber soit défini (CORRECTION)
+                const prefilledWhatsappText = `Bonjour, je vous contacte suite à un problème informatique. Mon numéro de ticket est : ${ticketNumber}.`;
+                const prefilledWhatsappLink = `${whatsappBaseLink}&text=${encodeURIComponent(prefilledWhatsappText)}`; // Utilisez whatsappBaseLink (CORRECTION)
+                const googleFormsFinalLink = `${googleFormsLink}`;
 
-                let cardsHtml = '';
-                for (const key in currentProblems) {
-                    if (currentProblems.hasOwnProperty(key)) {
-                        const problem = currentProblems[key];
-                        const icon = {
-                            'no-power': '💻',
-                            'password-forgotten': '🔑',
-                            'battery-not-charging': '🔋',
-                            'dark-screen': '💡',
-                            'slow-computer': '🐌',
-                            'wifi-down': '📶',
-                            'input-device-fail': '🖱️',
-                            'other-problem': '🤷'
-                        }[key];
-                        const bgColor = {
-                            'no-power': 'bg-purple-100',
-                            'password-forgotten': 'bg-blue-100',
-                            'battery-not-charging': 'bg-green-100',
-                            'dark-screen': 'bg-yellow-100',
-                            'slow-computer': 'bg-red-100',
-                            'wifi-down': 'bg-orange-100',
-                            'input-device-fail': 'bg-pink-100',
-                            'other-problem': 'bg-gray-200'
-                        }[key];
-                        const textColor = {
-                            'no-power': 'text-purple-800',
-                            'password-forgotten': 'text-blue-800',
-                            'battery-not-charging': 'text-green-800',
-                            'dark-screen': 'text-yellow-800',
-                            'slow-computer': 'text-red-800',
-                            'wifi-down': 'text-orange-800',
-                            'input-device-fail': 'text-pink-800',
-                            'other-problem': 'text-gray-800'
-                        }[key];
-
-                        cardsHtml += `
-                            <div data-problem="${key}" class="card-hover cursor-pointer p-6 ${bgColor} rounded-2xl shadow-md transition-all duration-300 transform">
-                                <div class="text-3xl mb-2">${icon}</div>
-                                <h3 class="text-lg font-semibold ${textColor}">${problem.title}</h3>
-                            </div>
-                        `;
-                    }
-                }
-
-                appContainer.innerHTML = `
-                    <div class="flex items-center justify-between mb-4">
-                         <button id="back-to-os" class="bg-gray-200 text-gray-800 px-4 py-2 rounded-full font-semibold hover:bg-gray-300 transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 inline-block mr-1">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                contentHTML += `
+                    <p class="mt-8 text-lg font-semibold text-gray-800">
+                        Le problème persiste ? Ne vous inquiétez pas !
+                    </p>
+                    <p class="text-sm text-gray-600 mb-4">
+                        Remplissez notre formulaire, contactez-nous via WhatsApp ou appelez-nous directement pour une assistance personnalisée.
+                    </p>
+                    <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4 mt-6">
+                        <a href="${googleFormsFinalLink}" target="_blank" class="contact-link bg-purple-600 text-white hover:bg-purple-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM5 7a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zM5 11a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zM9 15a1 1 0 011-1h4a1 1 0 110 2h-4a1 1 0 01-1-1z" />
                             </svg>
-                            Retour
-                        </button>
-                    </div>
-                    <div class="flex items-center justify-center mb-4">
-                         <img src="logo.png.png" alt="TECHPRECISION972 Logo" class="w-25 h-25 mb-2">
-                    </div>
-                    <h2 class="text-2xl font-bold text-gray-700 mb-2">TECHPRECISION972</h2>
-                    <h1 class="text-4xl font-bold text-gray-800 mb-2">Quel soucis rencontrez-vous ?</h1>
-                    <p class="text-gray-600 mb-8">
-                        Sélectionnez votre problème pour obtenir des étapes de dépannage simples et rapides.
-                    </p>
-                    <div id="problems-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                        ${cardsHtml}
+                            Formulaire
+                        </a>
+                        <a href="${prefilledWhatsappLink}" target="_blank" class="contact-link bg-green-500 text-white hover:bg-green-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-2.094 17.519c-.482-.093-2.883-1.189-3.292-1.336-.263-.09-.504-.148-.716.326-.201.442-.647 1.76-1.025 1.904-.325.127-.638.257-.962.22-.32-.036-.707-.15-.707-.492 0-.274.341-.409 1.144-1.294 1.157-1.123 2.502-2.527 2.657-2.735.155-.208.05-.333-.102-.478-.155-.144-.338-.285-.504-.424-.16-.134-.33-.314-.24-.515.09-.2.686-1.638.966-2.316.28-.679.564-.61.849-.61s.579-.047.884-.047c.299 0 .385.127.487.359.102.232.355.859.458 1.071.102.212.172.247.319.46.147.213.916 1.503.916 1.836 0 .333-.357.519-.357.519-.395.201-.637.31-.914.457-.277.146-.615.421-.357.734.258.312.984 1.439 1.258 1.636.273.197.358.319.461.431.103.111.106.182.072.348-.035.166-.46.862-.573 1.092-.112.23-.223.359-.446.471-.223.112-.497.165-.91.077z"/>
+                            </svg>
+                            WhatsApp
+                        </a>
+                        <a href="tel:${phoneNumber}" class="contact-link bg-slate-600 text-white hover:bg-slate-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M16.996 14.869c-.838-.052-.102-.782-.479-.933-.49-.193-.727-.221-1.229-.221-1.079 0-1.896-.549-2.617-1.272-.72-1.23-1.282-2.639-1.282-3.834 0-.498.028-.739.221-1.229.15-.377.88-.661.933-.479.839.052.102.782.479.933.49.193.727.221 1.229.221 1.079 0 1.896.549 2.617 1.272.72 1.23 1.282 2.639 1.282 3.834 0 .498-.028.739-.221 1.229-.15.377-.88.661-.933.479zM12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm2.094 17.519c-.482-.093-2.883-1.189-3.292-1.336-.263-.09-.504-.148-.716.326-.201.442-.647 1.76-1.025 1.904-.325.127-.638.257-.962.22-.32-.036-.707-.15-.707-.492 0-.274.341-.409 1.144-1.294 1.157-1.123 2.502-2.527 2.657-2.735.155-.208.05-.333-.102-.478-.155-.144-.338-.285-.504-.424-.16-.134-.33-.314-.24-.515.09-.2.686-1.638.966-2.316.28-.679.564-.61.849-.61s.579-.047.884-.047c.299 0 .385.127.487.359.102.232.355.859.458 1.071.102.212.172.247.319.46.147.213.916 1.503.916 1.836 0 .333-.357.519-.357.519-.395.201-.637.31-.914.457-.277.146-.615.421-.357.734.258.312.984 1.439 1.258 1.636.273.197.358.319.461.431.103.111.106.182.072.348-.035.166-.46.862-.573 1.092-.112.23-.223.359-.446.471-.223.112-.497.165-.91.077z"/>
+                            </svg>
+                            Appeler
+                        </a>
                     </div>
                 `;
 
-                // Attache les écouteurs d'événements aux nouvelles cartes et au bouton de retour
-                document.getElementById('problems-container').addEventListener('click', handleProblemClick);
-                document.getElementById('back-to-os').addEventListener('click', showOSSelection);
+                modalContent.innerHTML = contentHTML;
+                modal.classList.add('is-active'); // Affiche la modale
+                
+                // Ajoute la fonction de copie après que le contenu soit injecté
+                document.getElementById('copy-ticket').addEventListener('click', () => {
+                    const ticketNumberText = document.getElementById('ticket-number-display').textContent;
+                    navigator.clipboard.writeText(ticketNumberText).then(() => {
+                        // Vous pouvez ajouter un feedback visuel ici si vous le souhaitez, par ex. un petit message "Copié !"
+                    });
+                });
             }
+        }
+    }
 
-            // Gère le clic sur un problème
-            function handleProblemClick(event) {
-                let card = event.target.closest('[data-problem]');
-                if (card) {
-                    const problemKey = card.dataset.problem;
-                    const problemData = currentProblems[problemKey];
-                    const ticketNumber = generateTicketNumber();
+    // ... (le reste de votre gestion d'événements est le même) ...
+    appContainer.addEventListener('click', (event) => {
+        let osCard = event.target.closest('[data-os]');
+        if (osCard) {
+            showProblemList(osCard.dataset.os);
+        }
+    });
 
-                    if (problemData) {
-                        let contentHTML = `
-                            <div class="text-left mb-6 p-4 bg-gray-100 rounded-xl">
-                                <p class="text-sm font-semibold text-gray-500">Votre numéro de ticket :</p>
-                                <div class="flex items-center justify-between">
-                                    <p id="ticket-number-display" class="text-3xl font-bold text-gray-800">${ticketNumber}</p>
-                                    <button id="copy-ticket" class="text-gray-400 hover:text-gray-600 transition-colors">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v-.938c0-.621-.52-1.125-1.164-1.125h-5.316a1.125 1.125 0 01-1.164-1.125v-1.077a.896.896 0 00-.896-.896h-1.077a1.125 1.125 0 01-1.125-1.125V9.071m9.67-4.485c.622 0 1.126.504 1.126 1.126V15.54L17.75 17.25h-.938m-7.25-2.25H9.071c-.622 0-1.126.504-1.126 1.126v1.492m9.67-4.485V6.75h-2.164a1.125 1.125 0 01-1.164-1.125V4.5m-5.316-2.25v-1.077a.896.896 0 00-.896-.896h-1.077A1.125 1.125 0 014.5 4.071v2.164" />
-                                        </svg>
-                                    </button>
-                                </div>
-                                <p class="text-sm text-gray-600 mt-2">
-                                    Veuillez noter ce numéro ou le copier pour un suivi plus rapide.
-                                </p>
-                            </div>
-                            <h2 class="text-2xl font-bold mb-4 text-gray-800">${problemData.title}</h2>
-                        `;
-                        
-                        // Afficher les étapes seulement si le problème en a
-                        if (problemData.steps.length > 0) {
-                            contentHTML += '<ul class="list-disc list-inside space-y-2 text-left text-gray-700">';
-                            problemData.steps.forEach(step => {
-                                contentHTML += `<li>${step}</li>`;
-                            });
-                            contentHTML += '</ul>';
-                        }
-                        
-                        // Message final avec les liens de contact
-                        const prefilledWhatsappText = `Bonjour, je vous contacte suite à un problème informatique. Mon numéro de ticket est : ${ticketNumber}.`;
-                        const prefilledWhatsappLink = `${whatsappLink}&text=${encodeURIComponent(prefilledWhatsappText)}`;
-                        const googleFormsFinalLink = `${googleFormsLink}`;
+    // Écouteur d'événement pour fermer la modale
+    closeModalBtn.addEventListener('click', () => {
+        modal.classList.remove('is-active');
+    });
+    
+    // Écouteur pour le bouton "Retour"
+    backButton.addEventListener('click', () => {
+        modal.classList.remove('is-active');
+    });
 
-                        contentHTML += `
-                            <p class="mt-8 text-lg font-semibold text-gray-800">
-                                Le problème persiste ? Ne vous inquiétez pas !
-                            </p>
-                            <p class="text-sm text-gray-600 mb-4">
-                                Remplissez notre formulaire, contactez-nous via WhatsApp ou appelez-nous directement pour une assistance personnalisée.
-                            </p>
-                            <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4 mt-6">
-                                <a href="${googleFormsFinalLink}" target="_blank" class="contact-link bg-purple-600 text-white hover:bg-purple-700">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM5 7a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zM5 11a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zM9 15a1 1 0 011-1h4a1 1 0 110 2h-4a1 1 0 01-1-1z" />
-                                    </svg>
-                                    Formulaire
-                                </a>
-                                <a href="${prefilledWhatsappLink}" target="_blank" class="contact-link bg-green-500 text-white hover:bg-green-600">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-2.094 17.519c-.482-.093-2.883-1.189-3.292-1.336-.263-.09-.504-.148-.716.326-.201.442-.647 1.76-1.025 1.904-.325.127-.638.257-.962.22-.32-.036-.707-.15-.707-.492 0-.274.341-.409 1.144-1.294 1.157-1.123 2.502-2.527 2.657-2.735.155-.208.05-.333-.102-.478-.155-.144-.338-.285-.504-.424-.16-.134-.33-.314-.24-.515.09-.2.686-1.638.966-2.316.28-.679.564-.61.849-.61s.579-.047.884-.047c.299 0 .385.127.487.359.102.232.355.859.458 1.071.102.212.172.247.319.46.147.213.916 1.503.916 1.836 0 .333-.357.519-.357.519-.395.201-.637.31-.914.457-.277.146-.615.421-.357.734.258.312.984 1.439 1.258 1.636.273.197.358.319.461.431.103.111.106.182.072.348-.035.166-.46.862-.573 1.092-.112.23-.223.359-.446.471-.223.112-.497.165-.91.077z"/>
-                                    </svg>
-                                    WhatsApp
-                                </a>
-                                <a href="tel:${phoneNumber}" class="contact-link bg-slate-600 text-white hover:bg-slate-700">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M16.996 14.869c-.838-.052-.102-.782-.479-.933-.49-.193-.727-.221-1.229-.221-1.079 0-1.896-.549-2.617-1.272-.72-1.23-1.282-2.639-1.282-3.834 0-.498.028-.739.221-1.229.15-.377.88-.661.933-.479.839.052.102.782.479.933.49.193.727.221 1.229.221 1.079 0 1.896.549 2.617 1.272.72 1.23 1.282 2.639 1.282 3.834 0 .498-.028.739-.221 1.229-.15.377-.88.661-.933.479zM12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm2.094 17.519c-.482-.093-2.883-1.189-3.292-1.336-.263-.09-.504-.148-.716.326-.201.442-.647 1.76-1.025 1.904-.325.127-.638.257-.962.22-.32-.036-.707-.15-.707-.492 0-.274.341-.409 1.144-1.294 1.157-1.123 2.502-2.527 2.657-2.735.155-.208.05-.333-.102-.478-.155-.144-.338-.285-.504-.424-.16-.134-.33-.314-.24-.515.09-.2.686-1.638.966-2.316.28-.679.564-.61.849-.61s.579-.047.884-.047c.299 0 .385.127.487.359.102.232.355.859.458 1.071.102.212.172.247.319.46.147.213.916 1.503.916 1.836 0 .333-.357.519-.357.519-.395.201-.637.31-.914.457-.277.146-.615.421-.357.734.258.312.984 1.439 1.258 1.636.273.197.358.319.461.431.103.111.106.182.072.348-.035.166-.46.862-.573 1.092-.112.23-.223.359-.446.471-.223.112-.497.165-.91.077z"/>
-                                    </svg>
-                                    Appeler
-                                </a>
-                            </div>
-                        `;
+    // Ferme la modale si l'utilisateur clique en dehors
+    modal.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            modal.classList.remove('is-active');
+        }
+    });
 
-                        modalContent.innerHTML = contentHTML;
-                        modal.classList.add('is-active'); // Affiche la modale
-                        
-                        // Ajoute la fonction de copie après que le contenu soit injecté
-                        document.getElementById('copy-ticket').addEventListener('click', () => {
-                            const ticketNumberText = document.getElementById('ticket-number-display').textContent;
-                            navigator.clipboard.writeText(ticketNumberText).then(() => {
-                                // Vous pouvez ajouter un feedback visuel ici si vous le souhaitez, par ex. un petit message "Copié !"
-                            });
-                        });
-                    }
-                }
-            }
-
-            // Gère le clic sur le choix de l'OS
-            appContainer.addEventListener('click', (event) => {
-                let osCard = event.target.closest('[data-os]');
-                if (osCard) {
-                    showProblemList(osCard.dataset.os);
-                }
-            });
-
-            // Écouteur d'événement pour fermer la modale
-            closeModalBtn.addEventListener('click', () => {
-                modal.classList.remove('is-active');
-            });
-            
-            // Écouteur pour le bouton "Retour"
-            backButton.addEventListener('click', () => {
-                modal.classList.remove('is-active');
-            });
-
-            // Ferme la modale si l'utilisateur clique en dehors
-            modal.addEventListener('click', (event) => {
-                if (event.target === modal) {
-                    modal.classList.remove('is-active');
-                }
-            });
-
-            // Affiche la page de sélection de l'OS au chargement
-            showOSSelection();
-        });
-    </script>
-</body>
-</html>
-
-
+    // Affiche la page de sélection de l'OS au chargement
+    showOSSelection();
+});
