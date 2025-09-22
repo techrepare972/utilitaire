@@ -9,10 +9,6 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6;
-        }
-        .gradient-bg {
-            background-image: linear-gradient(to right top, #6a40a8, #8a58b5, #a971c2, #c98ace, #e9a3db);
         }
         .card-hover:hover {
             transform: translateY(-5px);
@@ -52,25 +48,25 @@
         }
     </style>
 </head>
-<body class="gradient-bg flex flex-col items-center justify-center min-h-screen p-4">
+<body class="bg-black flex flex-col items-center justify-center min-h-screen p-4">
 
-    <div id="app-container" class="w-full max-w-4xl p-8 bg-white rounded-3xl shadow-2xl text-center">
+    <div id="app-container" class="w-full max-w-4xl p-8 bg-gray-800 rounded-3xl shadow-2xl text-center">
         </div>
 
-    <div id="modal" class="modal fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
-        <div class="bg-white rounded-2xl p-8 max-w-xl w-full shadow-lg relative max-h-[90vh] overflow-y-auto">
-            <button id="close-modal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">
+    <div id="modal" class="modal fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-70">
+        <div class="bg-gray-900 rounded-2xl p-8 max-w-xl w-full shadow-lg relative max-h-[90vh] overflow-y-auto">
+            <button id="close-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl font-bold">
                 &times;
             </button>
             <div id="modal-content">
                 </div>
             <div class="flex justify-center mt-6">
-                <button id="back-button" class="bg-gray-200 text-gray-800 px-6 py-2 rounded-full font-semibold hover:bg-gray-300 transition-colors">Retour</button>
+                <button id="back-button" class="bg-gray-700 text-white px-6 py-2 rounded-full font-semibold hover:bg-gray-600 transition-colors">Retour</button>
             </div>
         </div>
     </div>
     
-    <div class="fixed bottom-0 left-0 right-0 p-4 text-center bg-gray-900 bg-opacity-70 z-10">
+    <div class="fixed bottom-0 left-0 right-0 p-4 text-center bg-black bg-opacity-70 z-10">
         <p class="text-xs text-white">Contactez-nous directement : <a href="tel:+596696600814" class="underline font-semibold">+596 696 60 08 14</a></p>
     </div>
 
@@ -244,24 +240,24 @@
                 const userCount = generateUserCount();
                 appContainer.innerHTML = `
                     <div class="flex items-center justify-center mb-4">
-                        <img src="logo.png.png" alt="TECHPRECISION972 Logo" class="w-23 h-23 mb-2">
+                        <img src="LOGO 2024.jpg" alt="TECHPRECISION972 Logo" class="w-20 h-20 mb-2">
                     </div>
-                    <h2 class="text-2xl font-bold text-gray-700 mb-2">TECHPRECISION972</h2>
-                    <h1 class="text-4xl font-bold text-gray-800 mb-2">Quel système utilisez-vous ?</h1>
-                    <p class="text-gray-600 mb-8">
+                    <h2 class="text-2xl font-bold text-gray-300 mb-2">TECHPRECISION972</h2>
+                    <h1 class="text-4xl font-bold text-white mb-2">Quel système utilisez-vous ?</h1>
+                    <p class="text-gray-400 mb-8">
                         Sélectionnez la marque de votre appareil pour obtenir des conseils sur mesure.
                     </p>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div data-os="windows" class="card-hover cursor-pointer p-8 bg-blue-100 rounded-2xl shadow-md transition-all duration-300 transform">
+                        <div data-os="windows" class="card-hover cursor-pointer p-8 bg-gray-800 border-2 border-gray-700 hover:border-blue-500 rounded-2xl shadow-md transition-all duration-300 transform">
                             <div class="text-6xl mb-4">🪟</div>
-                            <h3 class="text-xl font-bold text-blue-800">Ordinateur Windows</h3>
+                            <h3 class="text-xl font-bold text-white">Ordinateur Windows</h3>
                         </div>
-                        <div data-os="mac" class="card-hover cursor-pointer p-8 bg-gray-100 rounded-2xl shadow-md transition-all duration-300 transform">
+                        <div data-os="mac" class="card-hover cursor-pointer p-8 bg-gray-800 border-2 border-gray-700 hover:border-blue-500 rounded-2xl shadow-md transition-all duration-300 transform">
                             <div class="text-6xl mb-4">🍏</div>
-                            <h3 class="text-xl font-bold text-gray-800">Ordinateur Mac</h3>
+                            <h3 class="text-xl font-bold text-white">Ordinateur Mac</h3>
                         </div>
                     </div>
-                    <p class="text-sm text-gray-400 mt-6">
+                    <p class="text-sm text-gray-500 mt-6">
                         Vous êtes la **${userCount}**e personne à utiliser l'utilitaire.
                     </p>
                 `;
@@ -288,26 +284,8 @@
                             'input-device-fail': '🖱️',
                             'other-problem': '🤷'
                         }[key];
-                        const bgColor = {
-                            'no-power': 'bg-purple-100',
-                            'password-forgotten': 'bg-blue-100',
-                            'battery-not-charging': 'bg-green-100',
-                            'dark-screen': 'bg-yellow-100',
-                            'slow-computer': 'bg-red-100',
-                            'wifi-down': 'bg-orange-100',
-                            'input-device-fail': 'bg-pink-100',
-                            'other-problem': 'bg-gray-200'
-                        }[key];
-                        const textColor = {
-                            'no-power': 'text-purple-800',
-                            'password-forgotten': 'text-blue-800',
-                            'battery-not-charging': 'text-green-800',
-                            'dark-screen': 'text-yellow-800',
-                            'slow-computer': 'text-red-800',
-                            'wifi-down': 'text-orange-800',
-                            'input-device-fail': 'text-pink-800',
-                            'other-problem': 'text-gray-800'
-                        }[key];
+                        const bgColor = 'bg-gray-800 border-2 border-gray-700 hover:border-blue-500';
+                        const textColor = 'text-gray-200';
 
                         cardsHtml += `
                             <div data-problem="${key}" class="card-hover cursor-pointer p-6 ${bgColor} rounded-2xl shadow-md transition-all duration-300 transform">
@@ -320,7 +298,7 @@
 
                 appContainer.innerHTML = `
                     <div class="flex items-center justify-between mb-4">
-                        <button id="back-to-os" class="bg-gray-200 text-gray-800 px-4 py-2 rounded-full font-semibold hover:bg-gray-300 transition-colors">
+                        <button id="back-to-os" class="bg-transparent border border-gray-600 text-gray-400 px-4 py-2 rounded-full font-semibold hover:bg-gray-800 hover:text-white transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 inline-block mr-1">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
                             </svg>
@@ -328,11 +306,11 @@
                         </button>
                     </div>
                     <div class="flex items-center justify-center mb-4">
-                            <img src="logo.png.png" alt="TECHPRECISION972 Logo" class="w-25 h-25 mb-2">
+                            <img src="LOGO 2024.jpg" alt="TECHPRECISION972 Logo" class="w-20 h-20 mb-2">
                     </div>
-                    <h2 class="text-2xl font-bold text-gray-700 mb-2">TECHPRECISION972</h2>
-                    <h1 class="text-4xl font-bold text-gray-800 mb-2">Quel soucis rencontrez-vous ?</h1>
-                    <p class="text-gray-600 mb-8">
+                    <h2 class="text-2xl font-bold text-gray-300 mb-2">TECHPRECISION972</h2>
+                    <h1 class="text-4xl font-bold text-white mb-2">Quel soucis rencontrez-vous ?</h1>
+                    <p class="text-gray-400 mb-8">
                         Sélectionnez votre problème pour obtenir des étapes de dépannage simples et rapides.
                     </p>
                     <div id="problems-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -353,25 +331,25 @@
 
                     if (problemData) {
                         let contentHTML = `
-                            <div class="text-left mb-6 p-4 bg-gray-100 rounded-xl">
-                                <p class="text-sm font-semibold text-gray-500">Votre numéro de ticket :</p>
+                            <div class="text-left mb-6 p-4 bg-gray-800 rounded-xl">
+                                <p class="text-sm font-semibold text-gray-400">Votre numéro de ticket :</p>
                                 <div class="flex items-center justify-between">
-                                    <p id="ticket-number-display" class="text-3xl font-bold text-gray-800">${ticketNumber}</p>
-                                    <button id="copy-ticket" class="text-gray-400 hover:text-gray-600 transition-colors">
+                                    <p id="ticket-number-display" class="text-3xl font-bold text-white">${ticketNumber}</p>
+                                    <button id="copy-ticket" class="text-gray-400 hover:text-white transition-colors">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v-.938c0-.621-.52-1.125-1.164-1.125h-5.316a1.125 1.125 0 01-1.164-1.125v-1.077a.896.896 0 00-.896-.896h-1.077a1.125 1.125 0 01-1.125-1.125V9.071m9.67-4.485c.622 0 1.126.504 1.126 1.126V15.54L17.75 17.25h-.938m-7.25-2.25H9.071c-.622 0-1.126.504-1.126 1.126v1.492m9.67-4.485V6.75h-2.164a1.125 1.125 0 01-1.164-1.125V4.5m-5.316-2.25v-1.077a.896.896 0 00-.896-.896h-1.077A1.125 1.125 0 014.5 4.071v2.164" />
                                         </svg>
                                     </button>
                                 </div>
-                                <p class="text-sm text-gray-600 mt-2">
+                                <p class="text-sm text-gray-300 mt-2">
                                     Veuillez noter ce numéro ou le copier pour un suivi plus rapide.
                                 </p>
                             </div>
-                            <h2 class="text-2xl font-bold mb-4 text-gray-800">${problemData.title}</h2>
+                            <h2 class="text-2xl font-bold mb-4 text-white">${problemData.title}</h2>
                         `;
                         
                         if (problemData.steps.length > 0) {
-                            contentHTML += '<ul class="list-disc list-inside space-y-2 text-left text-gray-700">';
+                            contentHTML += '<ul class="list-disc list-inside space-y-2 text-left text-gray-300">';
                             problemData.steps.forEach(step => {
                                 contentHTML += `<li>${step}</li>`;
                             });
@@ -380,28 +358,19 @@
                         
                         const prefilledWhatsappText = `Bonjour, je vous contacte suite à un problème informatique. Mon numéro de ticket est : ${ticketNumber}.`;
                         const cleanedWhatsappNumber = cleanPhoneNumberForWhatsapp(rawPhoneNumber); 
-                        const prefilledWhatsappLink = `https://wa.me/${cleanedWhatsappNumber}?text=${encodeURIComponent(prefilledWhatsappText)}`; // Utilisez le ? ici
+                        const prefilledWhatsappLink = `https://wa.me/${cleanedWhatsappNumber}?text=${encodeURIComponent(prefilledWhatsappText)}`;
 
                         const googleFormsFinalLink = `${googleFormsLink}`;
 
-                        // AJOUT DE CONSOLE.LOG POUR DEBUG
-                        console.log("--- DEBUG WHATSAPP LINK ---");
-                        console.log("rawPhoneNumber:", rawPhoneNumber);
-                        console.log("cleanedWhatsappNumber:", cleanedWhatsappNumber);
-                        console.log("prefilledWhatsappText:", prefilledWhatsappText);
-                        console.log("prefilledWhatsappLink FINAL:", prefilledWhatsappLink);
-                        console.log("-------------------------");
-
-
                         contentHTML += `
-                            <p class="mt-8 text-lg font-semibold text-gray-800">
+                            <p class="mt-8 text-lg font-semibold text-white">
                                 Le problème persiste ? Ne vous inquiétez pas !
                             </p>
-                            <p class="text-sm text-gray-600 mb-4">
+                            <p class="text-sm text-gray-400 mb-4">
                                 Remplissez notre formulaire, contactez-nous via WhatsApp ou appelez-nous directement pour une assistance personnalisée.
                             </p>
                             <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4 mt-6">
-                                <a href="${googleFormsFinalLink}" target="_blank" class="contact-link bg-purple-600 text-white hover:bg-purple-700">
+                                <a href="${googleFormsFinalLink}" target="_blank" class="contact-link bg-blue-600 text-white hover:bg-blue-700">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                         <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM5 7a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zM5 11a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zM9 15a1 1 0 011-1h4a1 1 0 110 2h-4a1 1 0 01-1-1z" />
                                     </svg>
@@ -410,54 +379,59 @@
                                 <a href="${prefilledWhatsappLink}" target="_blank" class="contact-link bg-green-500 text-white hover:bg-green-600">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
                                         <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-2.094 17.519c-.482-.093-2.883-1.189-3.292-1.336-.263-.09-.504-.148-.716.326-.201.442-.647 1.76-1.025 1.904-.325.127-.638.257-.962.22-.32-.036-.707-.15-.707-.492 0-.274.341-.409 1.144-1.294 1.157-1.123 2.502-2.527 2.657-2.735.155-.208.05-.333-.102-.478-.155-.144-.338-.285-.504-.424-.16-.134-.33-.314-.24-.515.09-.2.686-1.638.966-2.316.28-.679.564-.61.849-.61s.579-.047.884-.047c.299 0 .385.127.487.359.102.232.355.859.458 1.071.102.212.172.247.319.46.147.213.916 1.503.916 1.836 0 .333-.357.519-.357.519-.395.201-.637.31-.914.457-.277.146-.615.421-.357.734.258.312.984 1.439 1.258 1.636.273.197.358.319.461.431.103.111.106.182.072.348-.035.166-.46.862-.573 1.092-.112.23-.223.359-.446.471-.223.112-.497.165-.91.077z"/>
-                            </svg>
-                            WhatsApp
-                        </a>
-                        <a href="tel:${phoneNumber}" class="contact-link bg-slate-600 text-white hover:bg-slate-700">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M16.996 14.869c-.838-.052-.102-.782-.479-.933-.49-.193-.727-.221-1.229-.221-1.079 0-1.896-.549-2.617-1.272-.72-1.23-1.282-2.639-1.282-3.834 0-.498.028-.739.221-1.229.15-.377.88-.661.933-.479.839.052.102.782.479.933.49.193.727.221 1.229.221 1.079 0 1.896.549 2.617 1.272.72 1.23 1.282 2.639 1.282 3.834 0 .498-.028-.739-.221 1.229-.15.377-.88.661-.933.479zM12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm2.094 17.519c-.482-.093-2.883-1.189-3.292-1.336-.263-.09-.504-.148-.716.326-.201.442-.647 1.76-1.025 1.904-.325.127-.638.257-.962.22-.32-.036-.707-.15-.707-.492 0-.274.341-.409 1.144-1.294 1.157-1.123 2.502-2.527 2.657-2.735.155-.208.05-.333-.102-.478-.155-.144-.338-.285-.504-.424-.16-.134-.33-.314-.24-.515.09-.2.686-1.638.966-2.316.28-.679.564-.61.849-.61s.579-.047.884-.047c.299 0 .385.127.487.359.102.232.355.859.458 1.071.102.212.172.247.319.46.147.213.916 1.503.916 1.836 0 .333-.357.519-.357.519-.395.201-.637.31-.914.457-.277.146-.615.421-.357.734.258.312.984 1.439 1.258 1.636.273.197.358.319.461.431.103.111.106.182.072.348-.035.166-.46.862-.573 1.092-.112.23-.223.359-.446.471-.223.112-.497.165-.91.077z"/>
-                            </svg>
-                            Appeler
-                        </a>
-                    </div>
-                `;
+                                    </svg>
+                                    WhatsApp
+                                </a>
+                                <a href="tel:${phoneNumber}" class="contact-link bg-gray-700 text-white hover:bg-gray-600">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M16.996 14.869c-.838-.052-.102-.782-.479-.933-.49-.193-.727-.221-1.229-.221-1.079 0-1.896-.549-2.617-1.272-.72-1.23-1.282-2.639-1.282-3.834 0-.498.028-.739.221-1.229.15-.377.88-.661.933-.479.839.052.102.782.479.933.49.193.727.221 1.229.221 1.079 0 1.896.549 2.617 1.272.72 1.23 1.282 2.639 1.282 3.834 0 .498-.028-.739-.221 1.229-.15.377-.88.661-.933.479zM12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm2.094 17.519c-.482-.093-2.883-1.189-3.292-1.336-.263-.09-.504-.148-.716.326-.201.442-.647 1.76-1.025 1.904-.325.127-.638.257-.962.22-.32-.036-.707-.15-.707-.492 0-.274.341-.409 1.144-1.294 1.157-1.123 2.502-2.527 2.657-2.735.155-.208.05-.333-.102-.478-.155-.144-.338-.285-.504-.424-.16-.134-.33-.314-.24-.515.09-.2.686-1.638.966-2.316.28-.679.564-.61.849-.61s.579-.047.884-.047c.299 0 .385.127.487.359.102.232.355.859.458 1.071.102.212.172.247.319.46.147.213.916 1.503.916 1.836 0 .333-.357.519-.357.519-.395.201-.637.31-.914.457-.277.146-.615.421-.357.734.258.312.984 1.439 1.258 1.636.273.197.358.319.461.431.103.111.106.182.072.348-.035.166-.46.862-.573 1.092-.112.23-.223.359-.446.471-.223.112-.497.165-.91.077z"/>
+                                    </svg>
+                                    Appeler
+                                </a>
+                            </div>
+                        `;
 
-                modalContent.innerHTML = contentHTML;
-                modal.classList.add('is-active'); 
-                
-                document.getElementById('copy-ticket').addEventListener('click', () => {
-                    const ticketNumberText = document.getElementById('ticket-number-display').textContent;
-                    navigator.clipboard.writeText(ticketNumberText).then(() => {
-                        // Feedback de copie
-                    });
-                });
+                        modalContent.innerHTML = contentHTML;
+                        modal.classList.add('is-active'); 
+                        
+                        document.getElementById('copy-ticket').addEventListener('click', () => {
+                            const ticketNumberText = document.getElementById('ticket-number-display').textContent;
+                            navigator.clipboard.writeText(ticketNumberText).then(() => {
+                                // Vous pouvez ajouter un feedback visuel ici, comme changer l'icône ou afficher un message.
+                            });
+                        });
+                    }
+                }
             }
-        }
-    }
 
-    appContainer.addEventListener('click', (event) => {
-        let osCard = event.target.closest('[data-os]');
-        if (osCard) {
-            showProblemList(osCard.dataset.os);
-        }
-    });
+            appContainer.addEventListener('click', (event) => {
+                let osCard = event.target.closest('[data-os]');
+                if (osCard) {
+                    showProblemList(osCard.dataset.os);
+                }
+            });
 
-    closeModalBtn.addEventListener('click', () => {
-        modal.classList.remove('is-active');
-    });
-    
-    backButton.addEventListener('click', () => {
-        modal.classList.remove('is-active');
-    });
+            closeModalBtn.addEventListener('click', () => {
+                modal.classList.remove('is-active');
+            });
+            
+            backButton.addEventListener('click', () => {
+                modal.classList.remove('is-active');
+            });
 
-    modal.addEventListener('click', (event) => {
-        if (event.target === modal) {
-            modal.classList.remove('is-active');
-        }
-    });
+            modal.addEventListener('click', (event) => {
+                if (event.target === modal) {
+                    modal.classList.remove('is-active');
+                }
+            });
 
-    showOSSelection();
-});
+            showOSSelection();
+        });
     </script>
 </body>
 </html>
+
+
+
+
+
